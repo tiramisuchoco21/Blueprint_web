@@ -15,7 +15,7 @@ from app.ai import explainer, nudge as nudge_ai, resolver, signal_extractor
 from app.config import FIXTURE_DIR
 from app.engine import calculator, impulse, rules, session as session_engine, signals
 from app.schemas.consumption import Transaction
-from app.schemas.profile import UserProfile
+from app.schemas.profile import UserProfile, profile_with
 
 
 # ─────────────────────────────────────────────────────────────
@@ -101,14 +101,10 @@ def simulate(profile: UserProfile, monthly_saving: int | None = None,
              target_amount: int | None = None,
              horizon_months: int | None = None) -> dict:
     """슬라이더 재계산. LLM을 부르지 않는다 — 0ms여야 한다."""
-    upd = {}
-    if monthly_saving is not None:
-        upd["monthly_saving"] = monthly_saving
-    if target_amount is not None:
-        upd["target_amount"] = target_amount
-    if horizon_months is not None:
-        upd["horizon_months"] = horizon_months
-    prof = profile.model_copy(update=upd)
+    # model_copy 가 아니라 profile_with 를 쓴다 — 음수 등 잘못된 값이
+    # 검증을 건너뛰고 들어오는 것을 막기 위해서다.
+    prof = profile_with(profile, monthly_saving=monthly_saving,
+                        target_amount=target_amount, horizon_months=horizon_months)
 
     capacity = rules.total_policy_capacity(rules.waterfall(prof))
     feas = calculator.feasibility(prof, capacity)
@@ -119,7 +115,9 @@ def simulate(profile: UserProfile, monthly_saving: int | None = None,
     return {
         "feasibility": feas.model_dump(),
         "months_to_goal": months_needed,
-        "delta_months": (months_needed - feas.horizon_months) if months_needed else None,
+        # `if months_needed` 로 쓰면 0개월(이미 목표 달성)이 falsy라 None이 된다.
+        "delta_months": (months_needed - feas.horizon_months)
+                        if months_needed is not None else None,
     }
 
 

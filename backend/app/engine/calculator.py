@@ -155,9 +155,20 @@ def debt_decision(profile: UserProfile) -> DebtDecision | None:
         return None
     assets = profile.current_cash or 0
     interest = int(loan * rate)
+
+    # 보유 현금이 대출액보다 적으면 애초에 '상환 vs 유지'를 비교할 상황이 아니다.
+    # 음수 잔액(-19,000,000 같은 값)을 화면에 내보내지 않는다.
+    if assets < loan:
+        return DebtDecision(
+            recommend="CANNOT_REPAY", loan_amount=loan, loan_rate=rate,
+            annual_interest_saved=interest, cash_after_repay=0, cash_if_keep=assets,
+            rationale_key="INSUFFICIENT_CASH",
+            note="보유 현금이 대출 잔액보다 적어 전액 상환 시나리오를 비교할 수 없습니다.",
+        )
+
     # 기준: 신용대출 금리가 정책대출 예상금리보다 높고, 상환 후에도
     #       계약금 여력이 남으면 상환이 유리하다고 본다.
-    recommend = "REPAY" if rate >= 0.045 and assets - loan > 0 else "KEEP"
+    recommend = "REPAY" if rate >= 0.045 else "KEEP"
     return DebtDecision(
         recommend=recommend, loan_amount=loan, loan_rate=rate,
         annual_interest_saved=interest, cash_after_repay=assets - loan,
@@ -187,11 +198,22 @@ def goal_impact(monthly_income: int, fixed_cost: int, variable_spent: int,
             new_horizon_months=feas.horizon_months,
         )
 
-    new_months = math.ceil(feas.gap / capacity) if capacity > 0 else 999
+    # 저축 여력이 0 이하면 도달 시점을 계산할 수 없다.
+    # 예전에는 999개월 센티널을 넣었는데, 그 값이 그대로 화면(과 Guard 화이트리스트)까지
+    # 흘러가 'D-Day 29,250일 지연' 같은 무의미한 숫자가 나왔다. 플래그로 바꾼다.
+    if capacity <= 0:
+        return GoalImpact(
+            status="AT_RISK", projected_monthly_saving=0,
+            required_monthly=feas.required_monthly, shortfall=feas.required_monthly,
+            original_horizon_months=feas.horizon_months,
+            new_horizon_months=0, d_day_shift_days=0, unreachable=True,
+        )
+
+    new_months = math.ceil(feas.gap / capacity)
     return GoalImpact(
-        status="AT_RISK", projected_monthly_saving=max(capacity, 0),
+        status="AT_RISK", projected_monthly_saving=capacity,
         required_monthly=feas.required_monthly,
-        shortfall=feas.required_monthly - max(capacity, 0),
+        shortfall=feas.required_monthly - capacity,
         original_horizon_months=feas.horizon_months,
         new_horizon_months=new_months,
         d_day_shift_days=(new_months - feas.horizon_months) * 30,

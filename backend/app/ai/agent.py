@@ -25,7 +25,7 @@ from app.config import MODEL
 from app.engine import calculator, policy_db, rules
 from app.schemas.consumption import Transaction
 from app.schemas.explain import AgentAnswer, ToolCallLog
-from app.schemas.profile import UserProfile
+from app.schemas.profile import UserProfile, profile_with
 
 log = logging.getLogger("csj.agent")
 
@@ -98,10 +98,9 @@ def _build_tools():
             monthly_saving: 월 저축 가능액(원).
         """
         ctx = _ctx.get()
-        prof = ctx.profile.model_copy(update={
-            "target_amount": target_amount, "horizon_months": horizon_months,
-            "monthly_saving": monthly_saving,
-        })
+        prof = profile_with(ctx.profile, target_amount=target_amount,
+                            horizon_months=horizon_months,
+                            monthly_saving=monthly_saving)
         cap = rules.total_policy_capacity(rules.waterfall(prof))
         feas = calculator.feasibility(prof, cap)
         return _record("calculate_feasibility",
@@ -131,9 +130,18 @@ def _build_tools():
         if monthly_saving:
             upd["monthly_saving"] = monthly_saving
         if repay_debt and base.existing_debt:
+            # 보유 현금보다 대출이 크면 상환 시나리오 자체가 성립하지 않는다.
+            if (base.current_cash or 0) < base.existing_debt:
+                return _record("simulate_what_if", {"repay_debt": True},
+                               {"error": "보유 현금이 대출 잔액보다 적어 "
+                                         "전액 상환 시나리오를 계산할 수 없습니다."})
             upd["current_cash"] = (base.current_cash or 0) - base.existing_debt
             upd["existing_debt"] = 0
-        prof = base.model_copy(update=upd)
+        try:
+            prof = profile_with(base, **upd)
+        except Exception as e:  # noqa: BLE001 — 검증 실패를 모델에게 알린다
+            return _record("simulate_what_if", upd,
+                           {"error": f"입력값이 유효하지 않습니다: {e}"})
         cap = rules.total_policy_capacity(rules.waterfall(prof))
         feas = calculator.feasibility(prof, cap)
         out = {"scenario": upd or "변경 없음", "result": feas.model_dump()}

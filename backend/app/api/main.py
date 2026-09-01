@@ -13,7 +13,7 @@ from typing import Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app import services
 from app.ai import agent, goal_parser
@@ -81,9 +81,9 @@ def analyze(req: AnalyzeRequest) -> dict:
 class SimulateRequest(BaseModel):
     persona: Optional[str] = "persona1"
     profile: Optional[UserProfile] = None
-    monthly_saving: Optional[int] = None
-    target_amount: Optional[int] = None
-    horizon_months: Optional[int] = None
+    monthly_saving: Optional[int] = Field(None, ge=0)
+    target_amount: Optional[int] = Field(None, ge=0)
+    horizon_months: Optional[int] = Field(None, ge=0, le=1200)
 
 
 @app.post("/api/simulate")
@@ -100,7 +100,7 @@ def simulate(req: SimulateRequest) -> dict:
 class FinToxRequest(BaseModel):
     persona: Optional[str] = "persona1"
     profile: Optional[UserProfile] = None
-    monthly_income: int = 2350000
+    monthly_income: int = Field(2350000, ge=0)
     with_ai: bool = True
 
 
@@ -114,10 +114,10 @@ def fintox(req: FinToxRequest) -> dict:
 
 
 class NudgeRequest(BaseModel):
-    tx_id: int
+    tx_id: int = Field(..., ge=1)
     persona: Optional[str] = "persona1"
     profile: Optional[UserProfile] = None
-    monthly_income: int = 2350000
+    monthly_income: int = Field(2350000, ge=0)
 
 
 @app.post("/api/fintox/nudge")
@@ -130,7 +130,7 @@ def nudge(req: NudgeRequest) -> dict:
 
 # ── Tool-Use Agent: 자유질의 ─────────────────────────────────
 class AskRequest(BaseModel):
-    question: str
+    question: str = Field(..., min_length=1, max_length=2000)
     persona: Optional[str] = "persona1"
     profile: Optional[UserProfile] = None
     include_transactions: bool = True

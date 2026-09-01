@@ -53,18 +53,25 @@ class GoalImpact(BaseModel):
     original_horizon_months: int = 0
     new_horizon_months: int = 0
     d_day_shift_days: int = 0
+    unreachable: bool = Field(
+        False,
+        description="현재 패턴으로는 저축 여력이 없어 도달 시점을 계산할 수 없음. "
+                    "이때 new_horizon_months / d_day_shift_days 는 0이며 "
+                    "UI는 숫자 대신 '현재 패턴으로는 계산 불가'를 표시해야 한다.",
+    )
 
 
 class DebtDecision(BaseModel):
     """신용대출 상환 시나리오 비교 (페르소나 2)."""
 
-    recommend: Literal["REPAY", "KEEP"]
+    recommend: Literal["REPAY", "KEEP", "CANNOT_REPAY"]
     loan_amount: int
     loan_rate: float
     annual_interest_saved: int
     cash_after_repay: int
     cash_if_keep: int
     rationale_key: str
+    note: Optional[str] = None
 
 
 class LoanTerms(BaseModel):
