@@ -1,0 +1,247 @@
+{
+  "base_date": "2026-09-01",
+  "_note": "verified=false 인 레코드는 페르소나 문서에서 수치가 확인되지 않은 항목이다. 실제 제출 전 공식 출처로 반드시 검증할 것. 코드는 이 플래그를 UI에 노출한다.",
+  "policies": [
+    {
+      "policy_id": "youth_butimok",
+      "name": "청년전용 버팀목전세자금",
+      "category": "housing_loan",
+      "goal_types": ["jeonse"],
+      "status": "ACTIVE",
+      "verified": true,
+      "apply_window": { "start": null, "end": null },
+      "rules": [
+        { "field": "age", "op": "between", "value": [19, 34], "label": "만 19~34세" },
+        { "field": "income_for_policy", "op": "lte", "value": 50000000, "label": "연소득 5,000만 원 이하" },
+        { "field": "is_homeowner", "op": "eq", "value": false, "label": "무주택" },
+        { "field": "is_householder", "op": "eq", "value": true, "label": "세대주 또는 예비세대주" },
+        { "field": "target_amount", "op": "lte", "value": 300000000, "label": "임차보증금 3억 원 이하", "soft": true }
+      ],
+      "amount": {
+        "type": "ratio_capped",
+        "base_field": "target_amount",
+        "ratio": 0.80,
+        "cap": 150000000,
+        "basis_template": "임차보증금 {base} × {ratio_pct} = {ratio_amount} 와 상품한도 {cap} 중 작은 값"
+      },
+      "rate": { "min": 0.022, "max": 0.033 },
+      "source": {
+        "name": "주택도시기금 / 서울주거포털",
+        "url": "https://nhuf.molit.go.kr",
+        "updated_at": "2026-09-01"
+      }
+    },
+    {
+      "policy_id": "seoul_youth_deposit_interest",
+      "name": "서울시 청년 임차보증금 이자지원",
+      "category": "housing_support",
+      "goal_types": ["jeonse"],
+      "status": "ACTIVE",
+      "verified": false,
+      "apply_window": { "start": null, "end": null },
+      "rules": [
+        { "field": "age", "op": "between", "value": [19, 39], "label": "만 19~39세" },
+        { "field": "region", "op": "contains", "value": "서울", "label": "서울시 거주" },
+        { "field": "is_homeowner", "op": "eq", "value": false, "label": "무주택" }
+      ],
+      "amount": { "type": "none" },
+      "benefit_note": "대출금 이자 일부 지원 (지원율·한도는 공고 기준)",
+      "source": {
+        "name": "서울주거포털",
+        "url": "https://housing.seoul.go.kr",
+        "updated_at": "2026-09-01"
+      }
+    },
+    {
+      "policy_id": "youth_future_savings",
+      "name": "청년미래적금",
+      "category": "savings",
+      "goal_types": ["jeonse", "lumpsum"],
+      "status": "ACTIVE",
+      "verified": false,
+      "maturity_months": 36,
+      "liquidity": "locked",
+      "apply_window": { "start": null, "end": null },
+      "rules": [
+        { "field": "age", "op": "between", "value": [19, 34], "label": "만 19~34세" },
+        { "field": "income_for_policy", "op": "lte", "value": 60000000, "label": "연소득 기준 충족" }
+      ],
+      "amount": { "type": "none" },
+      "benefit_note": "장기 자산형성 상품. 만기 전 중도해지 시 우대 상실",
+      "source": {
+        "name": "금융위원회",
+        "url": "https://www.fsc.go.kr",
+        "updated_at": "2026-09-01"
+      }
+    },
+    {
+      "policy_id": "seoul_youth_allowance",
+      "name": "서울 청년수당",
+      "category": "cash_support",
+      "goal_types": ["jeonse", "lumpsum"],
+      "status": "ACTIVE",
+      "verified": false,
+      "apply_window": { "start": null, "end": null },
+      "rules": [
+        { "field": "age", "op": "between", "value": [19, 34], "label": "만 19~34세" },
+        { "field": "job_type", "op": "in", "value": ["unemployed", "student", "freelance"], "label": "미취업 상태" },
+        { "field": "region", "op": "contains", "value": "서울", "label": "서울시 거주" }
+      ],
+      "amount": { "type": "none" },
+      "source": {
+        "name": "서울시 청년몽땅정보통",
+        "url": "https://youth.seoul.go.kr",
+        "updated_at": "2026-09-01"
+      }
+    },
+    {
+      "policy_id": "sme_youth_jeonse",
+      "name": "중소기업취업청년 전월세보증금대출",
+      "category": "housing_loan",
+      "goal_types": ["jeonse"],
+      "status": "ENDED",
+      "verified": true,
+      "ended_reason": "신규지원 종료",
+      "rules": [],
+      "amount": { "type": "none" },
+      "source": {
+        "name": "주택도시기금",
+        "url": "https://nhuf.molit.go.kr",
+        "updated_at": "2026-09-01"
+      }
+    },
+    {
+      "policy_id": "youth_leap_account",
+      "name": "청년도약계좌",
+      "category": "savings",
+      "goal_types": ["jeonse", "lumpsum"],
+      "status": "ENDED",
+      "verified": true,
+      "ended_reason": "신규가입 종료",
+      "rules": [],
+      "amount": { "type": "none" },
+      "source": {
+        "name": "서민금융진흥원",
+        "url": "https://ylaccount.kinfa.or.kr",
+        "updated_at": "2026-09-01"
+      }
+    },
+    {
+      "policy_id": "newlywed_purchase",
+      "name": "신혼부부전용 구입자금",
+      "category": "mortgage",
+      "goal_types": ["purchase", "marriage"],
+      "status": "ACTIVE",
+      "verified": true,
+      "apply_window": { "start": null, "end": null },
+      "rules": [
+        { "field": "household_income", "op": "lte", "value": 85000000, "label": "부부합산 연소득 8,500만 원 이하" },
+        { "field": "is_homeowner", "op": "eq", "value": false, "label": "무주택" },
+        { "field": "first_home_buyer", "op": "eq", "value": true, "label": "생애최초 주택구입" },
+        { "field": "target_amount", "op": "lte", "value": 600000000, "label": "대상주택 평가액 6억 원 이하" },
+        { "field": "months_to_marriage", "op": "lte", "value": 3, "label": "혼인 7년 이내 또는 3개월 이내 결혼예정자", "soft": true }
+      ],
+      "amount": {
+        "type": "ltv_dti_capped",
+        "base_field": "target_amount",
+        "ltv_max": 0.70,
+        "dti_max": 0.60,
+        "cap": 320000000,
+        "basis_template": "LTV {ltv_pct}({ltv_amount}) · DTI {dti_pct} · 상품한도 {cap} 중 가장 작은 값"
+      },
+      "rate": {
+        "min": 0.0255,
+        "max": 0.0385,
+        "build": {
+          "base": 0.0385,
+          "discounts": [
+            {
+              "id": "housing_subscription",
+              "label": "청약저축 6년·60회 이상 납입",
+              "value": -0.0030,
+              "status": "ACTIVE",
+              "requires": { "housing_subscription_years": 6, "housing_subscription_count": 60 }
+            },
+            {
+              "id": "e_contract",
+              "label": "전자계약 우대",
+              "value": -0.0010,
+              "status": "ENDED",
+              "auto_apply": false
+            }
+          ]
+        }
+      },
+      "loan_months": 360,
+      "source": {
+        "name": "주택도시기금 / 서울주거포털",
+        "url": "https://nhuf.molit.go.kr",
+        "updated_at": "2026-09-01"
+      }
+    },
+    {
+      "policy_id": "bogeumjari",
+      "name": "보금자리론",
+      "category": "mortgage",
+      "goal_types": ["purchase"],
+      "status": "ACTIVE",
+      "verified": false,
+      "apply_window": { "start": null, "end": null },
+      "rules": [
+        { "field": "household_income", "op": "lte", "value": 100000000, "label": "소득 기준 충족" },
+        { "field": "is_homeowner", "op": "eq", "value": false, "label": "무주택" }
+      ],
+      "amount": {
+        "type": "ltv_dti_capped",
+        "base_field": "target_amount",
+        "ltv_max": 0.70,
+        "dti_max": 0.60,
+        "cap": 360000000,
+        "basis_template": "LTV {ltv_pct}({ltv_amount}) · 상품한도 {cap} 중 작은 값"
+      },
+      "loan_months": 360,
+      "source": {
+        "name": "한국주택금융공사",
+        "url": "https://www.hf.go.kr",
+        "updated_at": "2026-09-01"
+      }
+    }
+  ],
+  "benefits": [
+    {
+      "benefit_id": "k_pass",
+      "name": "K-패스",
+      "verified": false,
+      "trigger": { "categories": ["transport"], "monthly_amount_gte": 70000 },
+      "benefit": { "type": "refund_rate", "rate_youth": 0.30, "rate_general": 0.20 },
+      "source": { "name": "국토교통부 K-패스", "url": "https://korea-pass.kr", "updated_at": "2026-09-01" }
+    },
+    {
+      "benefit_id": "local_gift_card",
+      "name": "지역사랑상품권",
+      "verified": false,
+      "trigger": { "categories": ["food_dining", "cafe", "convenience", "shopping"], "monthly_amount_gte": 200000 },
+      "benefit": { "type": "discount_rate", "rate": 0.07, "monthly_cap": 700000 },
+      "source": { "name": "지자체 공고", "url": "", "updated_at": "2026-09-01" }
+    },
+    {
+      "benefit_id": "cert_exam_support",
+      "name": "청년 자격증 응시료 지원",
+      "verified": false,
+      "signal": "studying_certificate",
+      "trigger": { "categories": ["education"], "monthly_amount_gte": 0 },
+      "benefit": { "type": "refund_rate", "rate": 0.50, "annual_cap": 300000 },
+      "source": { "name": "지자체 청년정책 공고", "url": "", "updated_at": "2026-09-01" }
+    },
+    {
+      "benefit_id": "nonfinancial_credit",
+      "name": "비금융정보 신용평가 반영",
+      "verified": false,
+      "signal": "telecom_autopay",
+      "trigger": { "categories": ["telecom", "insurance"], "monthly_amount_gte": 0 },
+      "benefit": { "type": "none" },
+      "note": "통신비·보험료 성실납부 이력을 NICE/KCB에 등록 가능. 점수 상승폭은 표시하지 않는다.",
+      "source": { "name": "NICE / KCB", "url": "", "updated_at": "2026-09-01" }
+    }
+  ]
+}
