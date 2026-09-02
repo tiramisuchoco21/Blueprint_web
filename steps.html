@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>청사진 - 정책금융 AI PB</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --navy: #0f172a;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --green: #10b981;
+      --yellow: #d97706;
+      --red: #ef4444;
+      --gray-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--gray-bg); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Header */
+    header { background: white; border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; height: 64px; }
+    .logo { font-weight: 800; font-size: 20px; color: var(--navy); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .logo-icon { background: var(--blue); color: white; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .user-info { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+
+    /* Container */
+    .container { max-width: 1280px; width: 100%; margin: 0 auto; padding: 24px; flex: 1; }
+
+    /* PAGE 1: 랜딩 */
+    .hero-box { text-align: center; max-width: 640px; width: 100%; }
+    .hero-title { font-size: 34px; font-weight: 800; color: var(--navy); margin: 16px 0 12px; line-height: 1.3; }
+    .hero-desc { color: var(--text-muted); margin-bottom: 32px; font-size: 15px; }
+
+    /* PAGE 2: 분석 대시보드 */
+    #page-dashboard { display: none; gap: 24px; align-items: flex-start; }
+    #page-dashboard.active { display: flex; }
+
+    /* Left Sidebar (LNB) */
+    .lnb-sidebar { width: 220px; position: sticky; top: 88px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+    .lnb-item { padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.2s; background: white; border: 1px solid var(--border); }
+    .lnb-item:hover { background: #f1f5f9; }
+    .lnb-item.active { background: var(--navy); color: white; border-color: var(--navy); box-shadow: 0 4px 12px rgba(15,23,42,0.12); }
+
+    /* Main Content Area */
+    .main-content { flex: 1; display: flex; flex-direction: column; gap: 32px; min-width: 0; }
+
+    /* Goal Summary Bar */
+    .current-goal-summary { background: var(--blue-light); border: 1px solid #bfdbfe; padding: 14px 20px; border-radius: 12px; font-size: 13px; color: var(--blue); font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+
+    /* Card Box */
+    .card { background: var(--card-bg); border-radius: 16px; padding: 28px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.03); scroll-margin-top: 88px; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .card-title { font-size: 20px; font-weight: 800; color: var(--navy); }
+    .wow-tag { font-size: 11px; background: var(--blue-light); color: var(--blue); padding: 4px 8px; border-radius: 6px; font-weight: 700; }
+
+    /* Badges */
+    .badge { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+    .badge-eligible { background: #dcfce7; color: #15803d; }
+    .badge-conditional { background: #fef3c7; color: #b45309; }
+    .badge-not { background: #fee2e2; color: #b91c1c; }
+    .badge-ended { background: #f1f5f9; color: #475569; }
+
+    /* Policy Waterfall Table */
+    .wf-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    .wf-table th, .wf-table td { padding: 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .wf-table th { background: #f8fafc; font-weight: 700; color: var(--text-muted); }
+    .wf-row { cursor: pointer; transition: background 0.2s; }
+    .wf-row:hover { background: var(--blue-light); }
+    .wf-row.selected { background: #e0f2fe; border-left: 4px solid var(--blue); }
+
+    /* Policy Reason Box */
+    .reason-box { background: #f8fafc; border: 1px solid var(--blue); border-radius: 12px; padding: 20px; margin-top: 16px; display: none; }
+    .reason-box.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .rule-check-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; font-size: 12px; }
+    .rule-item { padding: 8px 12px; background: white; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* Blueprint Grid */
+    .blueprint-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .bp-box { background: #f8fafc; padding: 16px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+    .bp-box .label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .bp-box .value { font-size: 20px; font-weight: 800; color: var(--navy); }
+
+    .funding-map { background: #f1f5f9; padding: 20px; border-radius: 12px; }
+    .bar-group { margin-bottom: 12px; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .bar-track { background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--blue); border-radius: 5px; transition: width 0.3s ease; }
+
+    /* AI Insight Banner */
+    .ai-insight-banner {
+      background: #ffffff;
+      border: 1px solid #e0e7ff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.05);
+    }
+    .tag-group { display: flex; gap: 8px; margin-bottom: 14px; }
+    .mini-tag { font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; }
+    .tag-fact { background: #e0e7ff; color: #4338ca; }
+    .tag-calc { background: #ccfbf1; color: #0f766e; }
+    .tag-advice { background: #ffedd5; color: #c2410c; }
+
+    .insight-title { font-size: 17px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+    .insight-desc { font-size: 14px; color: #334155; line-height: 1.5; }
+    .insight-guide-note { font-size: 12px; color: var(--blue); font-weight: 600; margin-top: 12px; background: var(--blue-light); padding: 8px 12px; border-radius: 8px; display: inline-block; }
+
+    /* 3번 Simulator */
+    .sim-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-top: 12px; }
+    .sim-left-box { background: #ffffff; border: 1px solid var(--border); padding: 24px; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; }
+    .sim-header-tag { font-size: 11px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; }
+    .sim-main-title { font-size: 22px; font-weight: 800; color: var(--navy); margin: 6px 0 8px; }
+    .sim-sub-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    
+    .sim-display-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 16px 0; text-align: left; }
+    .sim-display-label { font-size: 12px; color: var(--text-muted); }
+    .sim-display-val { font-size: 32px; font-weight: 800; color: var(--navy); margin-top: 4px; }
+    
+    .sim-result-alert { background: #fef3c7; border: 1px solid #fde68a; border-radius: 12px; padding: 16px; font-size: 13px; color: #92400e; display: flex; flex-direction: column; gap: 4px; }
+    .sim-alert-title { font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+    .sim-right-col { display: flex; flex-direction: column; gap: 16px; }
+    .tradeoff-card { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .section-mini-title { font-size: 11px; font-weight: 800; color: var(--blue); letter-spacing: 0.5px; margin-bottom: 4px; }
+    .plan-title { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 14px; }
+    
+    .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .plan-box { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: 0.2s; }
+    .plan-box.active { border: 2px solid var(--blue); background: var(--blue-light); }
+    .plan-box .plan-tag { font-size: 11px; font-weight: 800; color: var(--blue); margin-bottom: 12px; display: block; }
+    .plan-box .plan-heading { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    .plan-box .plan-text { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    .decision-card { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .decision-title { font-size: 16px; font-weight: 800; color: var(--navy); margin: 6px 0 8px; }
+    .decision-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* 4. FinTox */
+    .fintox-flow-container { display: flex; flex-direction: column; gap: 16px; margin-top: 12px; }
+    .fintox-node { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; transition: 0.2s; }
+    .fintox-node:hover { border-color: var(--blue); }
+    .fintox-input-display { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-size: 14px; color: var(--navy); font-weight: 600; margin-top: 10px; }
+    .fintox-score-wrapper { display: flex; align-items: center; gap: 24px; margin-top: 12px; }
+    .fintox-score-circle { width: 80px; height: 80px; border-radius: 50%; border: 6px solid var(--blue); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; }
+    .fintox-score-val { font-size: 20px; color: var(--navy); }
+    .fintox-score-max { font-size: 11px; color: var(--text-muted); }
+    .fintox-tags { display: flex; gap: 6px; margin-bottom: 8px; }
+    .fintox-chip { font-size: 11px; font-weight: 700; background: #f1f5f9; padding: 4px 10px; border-radius: 20px; color: var(--text-muted); }
+    .fintox-alert-text { background: #fffbe3; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 6px; font-size: 13px; color: #b45309; margin-top: 12px; line-height: 1.4; }
+
+    /* 5. Policy Action Center & 실행준비도 스타일 */
+    .readiness-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .readiness-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .readiness-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .readiness-score {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .readiness-bar-track {
+      background: #e2e8f0;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .readiness-bar-fill {
+      height: 100%;
+      background: var(--blue);
+      width: 33%;
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+
+    .checklist-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      background: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .check-item:hover {
+      background: var(--blue-light);
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+
+    .check-item.checked {
+      background: var(--blue-light);
+      border-color: #93c5fd;
+      color: var(--blue);
+    }
+
+    .readiness-info-note {
+      background: var(--blue-light);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--blue);
+      font-weight: 600;
+      margin-top: 16px;
+      line-height: 1.4;
+    }
+
+    /* 타임라인 수직연동 스타일 */
+    .action-flow-container { display: flex; flex-direction: column; gap: 0; position: relative; margin-top: 16px; }
+    
+    .action-flow-container::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 28px;
+      width: 2px;
+      height: calc(100% - 80px);
+      background: #e2e8f0;
+      z-index: 1;
+    }
+
+    .action-step-node {
+      display: flex;
+      gap: 20px;
+      position: relative;
+      z-index: 2;
+      padding-bottom: 24px;
+    }
+
+    .step-icon-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .action-step-node.completed .step-icon-circle {
+      border-color: var(--green);
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .action-step-node.active .step-icon-circle {
+      border-color: var(--blue);
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+
+    .step-content-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      flex: 1;
+    }
+
+    .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .step-title { font-size: 15px; font-weight: 800; color: var(--navy); }
+    .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; margin-top: 4px; }
+
+    .action-summary-card {
+      background: #0f172a;
+      color: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .btn-action { background: var(--navy); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; text-align: center; transition: 0.2s; }
+    .btn-action:hover { background: var(--blue); }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo" onclick="location.href='index.html'">
+      <div class="logo-icon">청</div>
+      <span>청사진</span>
+    </div>
+    <div class="user-info">👤 김민재 (전세독립) | 🟢 2026.09 DB</div>
+  </header>
+
+  <div class="container">
+
+    <!-- ================= PAGE 2: 분석 대시보드 ================= -->
+    <div id="page-dashboard" class="active">
+      <!-- 좌측 LNB 메뉴 -->
+      <nav class="lnb-sidebar">
+        <div class="lnb-item active" onclick="scrollToSection('sec-waterfall')">1. Policy Waterfall</div>
+        <div class="lnb-item" onclick="scrollToSection('sec-blueprint')">2. Blueprint Wallet</div>
+        <div class="lnb-item" onclick="scrollToSection('sec-simulator')">3. What-if Simulator</div>
+        <div class="lnb-item" onclick="scrollToSection('sec-fintox')">4. FinTox 소비 진단</div>
+        <div class="lnb-item" onclick="scrollToSection('sec-action')">5. Policy Action Center</div>
+      </nav>
+
+      <main class="main-content">
+
+        <!-- 목표 요약 바 -->
+        <div class="current-goal-summary">
+          <span>🎯 분석 목표: "<span id="summary-text">2년 뒤 마포구 1억 전세 독립 원해. 현재 현금 600만 원 있어.</span>"</span>
+        </div>
+
+        <!-- 1. Policy Waterfall -->
+        <section id="sec-waterfall" class="card">
+          <div class="card-header">
+            <div class="card-title">1. Policy Waterfall (4단계 정책 판정)</div>
+            <div class="wow-tag">Eligible 정책 클릭 시 하단 세션에 자동 반영됩니다</div>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">원하는 정책을 선택하여 다음 세션의 시뮬레이션을 비교할 수 있습니다.</p>
+
+          <table class="wf-table">
+            <thead>
+              <tr>
+                <th>상태</th>
+                <th>정책명</th>
+                <th>판정 의미</th>
+                <th>예상 혜택 / 비고</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="wf-row selected" onclick="selectPolicy('p1', 8000, '청년전용 버팀목 전세자금대출', '적용')">
+                <td><span class="badge badge-eligible">🟢 Eligible</span></td>
+                <td><strong>청년전용 버팀목 전세자금대출</strong></td>
+                <td>현재 핵심 조건 충족</td>
+                <td>최대 8,000만 원 (연 1.5%)</td>
+              </tr>
+              <tr class="wf-row" onclick="selectPolicy('p2', 7000, '서울시 청년 임차보증금 대출', '적용')">
+                <td><span class="badge badge-eligible">🟢 Eligible</span></td>
+                <td><strong>서울시 청년 임차보증금 대출</strong></td>
+                <td>지자체 지원조건 충족</td>
+                <td>최대 7,000만 원 (연 2.0% 이자지원)</td>
+              </tr>
+              <tr class="wf-row" onclick="selectPolicy('p3', 5000, '카카오뱅크 청년 전월세 대출', '적용')">
+                <td><span class="badge badge-eligible">🟢 Eligible</span></td>
+                <td><strong>카카오뱅크 청년 전월세 대출</strong></td>
+                <td>모바일 간편신청 가능</td>
+                <td>최대 5,000만 원 (연 3.8%)</td>
+              </tr>
+
+              <tr class="wf-row" onclick="selectPolicy('p4', 0, '청년도약계좌 패키지', '미적용')">
+                <td><span class="badge badge-conditional">🟡 Conditional</span></td>
+                <td>청년도약계좌 패키지</td>
+                <td>추가 조건·시점 확인 필요</td>
+                <td>24개월 만기 시점 재검증 필요</td>
+              </tr>
+              <tr class="wf-row" onclick="selectPolicy('p5', 0, '청년 내일채움공제', '미적용')">
+                <td><span class="badge badge-conditional">🟡 Conditional</span></td>
+                <td>청년 내일채움공제</td>
+                <td>재직 기업 요건 확인 필요</td>
+                <td>5인 이상 제조·지식기반 기업 대상</td>
+              </tr>
+
+              <tr class="wf-row" onclick="selectPolicy('p6', 0, '상용근로자 청년수당', '미적용')">
+                <td><span class="badge badge-not">🔴 Not Eligible</span></td>
+                <td>상용근로자 청년수당</td>
+                <td>현재 조건상 요건 미충족</td>
+                <td>소득 구간 기준 초과</td>
+              </tr>
+              <tr class="wf-row" onclick="selectPolicy('p7', 0, '청년 월세 특별지원', '미적용')">
+                <td><span class="badge badge-not">🔴 Not Eligible</span></td>
+                <td>청년 월세 특별지원</td>
+                <td>전세 주택 목표와 불일치</td>
+                <td>월세 계약 거주자 전용 정책</td>
+              </tr>
+
+              <tr class="wf-row" onclick="selectPolicy('p8', 0, '중소기업 취업청년 전세대출', '미적용')">
+                <td><span class="badge badge-ended">⚪ Ended</span></td>
+                <td>중소기업 취업청년 전세대출</td>
+                <td>신규지원 종료</td>
+                <td>2024년 12월부로 일몰 종료</td>
+              </tr>
+              <tr class="wf-row" onclick="selectPolicy('p9', 0, '청년 희망적금', '미적용')">
+                <td><span class="badge badge-ended">⚪ Ended</span></td>
+                <td>청년 희망적금</td>
+                <td>신규 가입 종료</td>
+                <td>청년도약계좌로 통합 전환</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div id="p1" class="reason-box active">
+            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px;">💡 [선택 적용됨] 청년전용 버팀목 전세자금대출</h4>
+            <p style="font-size: 13px; color: var(--text-muted);">연령, 자산 조건이 100% 부합합니다. 대출 한도 8,000만 원 적용 시 목표 자기자본은 2,000만 원입니다.</p>
+            <div class="rule-check-list">
+              <div class="rule-item">✅ 만 19세~34세 무주택 세대주 (통과)</div>
+              <div class="rule-item">✅ 자산 기준 3.45억 원 이하 (통과)</div>
+            </div>
+          </div>
+          <div id="p2" class="reason-box">
+            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px;">💡 [선택 적용됨] 서울시 청년 임차보증금 대출</h4>
+            <p style="font-size: 13px; color: var(--text-muted);">서울시 거주 청년 대상 대출입니다. 대출 한도 7,000만 원 적용 시 목표 자기자본은 3,000만 원입니다.</p>
+          </div>
+          <div id="p3" class="reason-box">
+            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px;">💡 [선택 적용됨] 카카오뱅크 청년 전월세 대출</h4>
+            <p style="font-size: 13px; color: var(--text-muted);">비대면 빠른 대출이 가능합니다. 대출 한도 5,000만 원 적용 시 목표 자기자본은 5,000만 원입니다.</p>
+          </div>
+          <div id="p4" class="reason-box"><h4 style="font-size: 15px; color: var(--navy);">⚠️ [조건부 판정] 청년도약계좌 패키지</h4><p style="font-size: 13px; color: var(--text-muted); margin-top:8px;">5년 만기 상품으로 2년 뒤 독립 시 적금 담보대출 활용이 필요합니다.</p></div>
+          <div id="p5" class="reason-box"><h4 style="font-size: 15px; color: var(--navy);">⚠️ [조건부 판정] 청년 내일채움공제</h4><p style="font-size: 13px; color: var(--text-muted); margin-top:8px;">재직 중인 기업이 소정의 청년공제 참여 요건을 갖추었는지 확인이 필요합니다.</p></div>
+          <div id="p6" class="reason-box"><h4 style="font-size: 15px; color: var(--navy);">❌ [지원 불가] 상용근로자 청년수당</h4><p style="font-size: 13px; color: var(--text-muted); margin-top:8px;">월 소득 수준이 지원 대상 기준을 초과하여 제외되었습니다.</p></div>
+          <div id="p7" class="reason-box"><h4 style="font-size: 15px; color: var(--navy);">❌ [지원 불가] 청년 월세 특별지원</h4><p style="font-size: 13px; color: var(--text-muted); margin-top:8px;">전세 독립을 목표로 하므로 월세 전용 지원금 대상에 해당하지 않습니다.</p></div>
+          <div id="p8" class="reason-box"><h4 style="font-size: 15px; color: var(--navy);">ℹ️ [종료 안내] 중소기업 취업청년 전세대출</h4><p style="font-size: 13px; color: var(--text-muted); margin-top:8px;">2024년 12월부로 일몰 종료되어 신규 신청이 불가합니다.</p></div>
+          <div id="p9" class="reason-box"><h4 style="font-size: 15px; color: var(--navy);">ℹ️ [종료 안내] 청년 희망적금</h4><p style="font-size: 13px; color: var(--text-muted); margin-top:8px;">청년도약계좌로 통합 운영되어 신규 가입이 마감되었습니다.</p></div>
+        </section>
+
+        <!-- 2. Blueprint Dashboard -->
+        <section id="sec-blueprint" class="card">
+          <div class="card-header">
+            <div class="card-title">2. Blueprint Dashboard & Policy Wallet</div>
+            <div class="wow-tag" id="applied-policy-tag">적용 정책: 청년전용 버팀목 전세자금대출</div>
+          </div>
+          <div class="blueprint-grid">
+            <div class="bp-box"><div class="label">목표 전세보증금</div><div class="value">1억 원</div></div>
+            <div class="bp-box"><div class="label">정책대출 지원금</div><div class="value" id="bp-loan-val" style="color:var(--blue);">8,000만 원</div></div>
+            <div class="bp-box"><div class="label">목표 자기자본</div><div class="value" id="bp-equity-val">2,000만 원</div></div>
+            <div class="bp-box"><div class="label">현재 보유 자산</div><div class="value" style="color:var(--green);">600만 원</div></div>
+          </div>
+          <div class="funding-map">
+            <div style="font-weight: 700; font-size: 14px; margin-bottom: 12px;">Goal Funding Map</div>
+            <div class="bar-group">
+              <div class="bar-label"><span>보유 금융자산 (현재 확보)</span><span>600만 원</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width: 6%;"></div></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label"><span>향후 24개월 저축 (필요 자기자본)</span><span id="map-save-text">1,400만 원</span></div>
+              <div class="bar-track"><div id="map-save-bar" class="bar-fill" style="width: 14%; background: var(--navy);"></div></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-label"><span>정책대출 활용액</span><span id="map-loan-text">8,000만 원</span></div>
+              <div class="bar-track"><div id="map-loan-bar" class="bar-fill" style="width: 80%;"></div></div>
+            </div>
+          </div>
+
+          <div class="ai-insight-banner">
+            <div class="tag-group">
+              <span class="mini-tag tag-fact">FACT</span>
+              <span class="mini-tag tag-calc">CALCULATION</span>
+              <span class="mini-tag tag-advice">AI ADVICE</span>
+            </div>
+            <div class="insight-title" id="insight-title-text">핵심 결론 · 1억 원을 전부 현금으로 모을 필요는 없습니다.</div>
+            <div class="insight-desc" id="insight-desc-text">
+              정책금융을 <strong>8,000만 원</strong>으로 가정하면 필요한 자기자본은 <strong>2,000만 원</strong>입니다. 현재 600만 원이 있으므로 <strong>추가 1,400만 원 · 월 약 58만 원</strong>이 핵심 실행목표입니다.
+            </div>
+            <div class="insight-guide-note">
+              💡 아래 3. What-if Simulator에서 월 저축액 변수를 자유롭게 조정해 현실적인 플랜을 시뮬레이션해보세요.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. What-if Simulator -->
+        <section id="sec-simulator" class="card">
+          <div class="card-header">
+            <div class="card-title">3. What-if Simulator</div>
+            <div class="wow-tag">Realtime</div>
+          </div>
+
+          <div class="sim-layout">
+            <div class="sim-left-box">
+              <div>
+                <div class="sim-header-tag">WHAT-IF SIMULATOR</div>
+                <div class="sim-main-title">월 저축액을 바꿔보세요</div>
+                <div class="sim-sub-desc">목표를 포기하는 대신 어느 변수를 바꾸면 현실성이 높아지는지 계산합니다.</div>
+
+                <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-bottom:4px;">
+                  <span>30만 원</span>
+                  <span style="margin-left:auto;">100만 원</span>
+                </div>
+                <input id="sim-slider" type="range" class="slider" min="30" max="100" value="58" oninput="runSim(this.value)" style="width:100%;">
+
+                <div class="sim-display-card">
+                  <div class="sim-display-label">월 저축액</div>
+                  <div class="sim-display-val" id="sim-display-text">58만 원</div>
+                </div>
+              </div>
+
+              <div class="sim-result-alert" id="sim-alert-box">
+                <div class="sim-alert-title">🟡 현재 저축액이면 <span id="sim-months-text">약 24개월</span> 필요</div>
+                <div style="font-size:12px; color:#b45309;" id="sim-delay-text">기존 목표 기간과 정확히 일치합니다.</div>
+              </div>
+            </div>
+
+            <div class="sim-right-col">
+              <div class="tradeoff-card">
+                <div class="section-mini-title">GOAL TRADE-OFF</div>
+                <div class="plan-title">Plan A / Plan B</div>
+                <div class="plan-grid">
+                  <div class="plan-box active" id="plan-a-box" onclick="setPlan('A')">
+                    <span class="plan-tag">Plan A</span>
+                    <div class="plan-heading">기간을 지킨다</div>
+                    <div class="plan-text">24개월 목표를 유지하고 월 약 <span id="plan-a-val">58만 원</span>을 확보합니다.</div>
+                  </div>
+                  <div class="plan-box" id="plan-b-box" onclick="setPlan('B')">
+                    <span class="plan-tag">Plan B</span>
+                    <div class="plan-heading">저축 부담을 낮춘다</div>
+                    <div class="plan-text">월저축을 낮추면 목표기간이 자동 연장됩니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="decision-card">
+                <div class="section-mini-title">DECISION PRINCIPLE</div>
+                <div class="decision-title">듣고 싶은 답보다 가능한 답을 계산합니다.</div>
+                <div class="decision-desc">
+                  월 저축액을 움직이면 "언제 독립 가능한지"를 즉시 다시 계산합니다.<br>
+                  <span style="color:var(--blue); font-weight:700; margin-top:6px; display:inline-block;">↓ 아래 FinTox 세션에서 지출 내역을 기반으로 저축 계획을 방해하는 요소를 정밀 분석해 드립니다.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. FinTox -->
+        <section id="sec-fintox" class="card">
+          <div class="card-header">
+            <div class="card-title">4. FinTox (결제 문자 기반 소비 위험 진단)</div>
+            <div class="wow-tag">Goal-oriented Analysis</div>
+          </div>
+
+          <div class="fintox-flow-container">
+            <div class="fintox-node">
+              <div class="section-mini-title">FINTOX · SUPPORTING</div>
+              <div class="insight-title" style="margin-top:4px;">결제 문자를 목표 관점에서 분석</div>
+              <div style="font-size:13px; color:var(--text-muted);">감정을 단정하지 않고 예산·빈도·시간대·목표저축 대비 비중으로 위험지수를 계산합니다.</div>
+              <div class="fintox-input-display">
+                💬 [신한체크승인] 09/01 23:40 배달의민족 34,000원
+              </div>
+            </div>
+
+            <div class="fintox-node" style="background: #faf5ff; border-color: #e9d5ff;">
+              <div class="section-mini-title" style="color: #7c3aed;">RISK INDEX</div>
+              <div class="fintox-score-wrapper">
+                <div class="fintox-score-circle" style="border-color: #8b5cf6;">
+                  <span class="fintox-score-val" style="color: #6d28d9;">72</span>
+                  <span class="fintox-score-max">/100</span>
+                </div>
+                <div>
+                  <div class="fintox-tags">
+                    <span class="fintox-chip">야간 결제</span>
+                    <span class="fintox-chip">배달/외식</span>
+                    <span class="fintox-chip" style="background:#fef3c7; color:#b45309;">월 저축목표 대비 5.9%</span>
+                  </div>
+                  <div style="font-size: 18px; font-weight: 800; color: #5b21b6;">소비위험지수: 관찰 필요</div>
+                </div>
+              </div>
+              <div class="fintox-alert-text">
+                이번 <strong>34,000원 지출</strong>은 월 독립저축 목표 583,000원의 <strong>약 5.8%</strong>입니다. 감정을 추정하지 않고 목표 저축과의 상대적 영향을 보여줍니다.
+              </div>
+            </div>
+
+            <div class="fintox-node">
+              <div class="section-mini-title">SMART PRESCRIPTION</div>
+              <div class="insight-title" style="margin-top:4px;">소비를 막기보다 실질지출을 낮춥니다.</div>
+              <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-top:6px;">
+                주소지 정책 DB를 조회해 K-패스, 지역화폐, 생활비 지원 등 실제 이용 가능한 혜택을 함께 제안합니다.<br>
+                목표는 "배달 금지"가 아니라 실질지출을 낮추면서 <strong>월 58.3만 원 저축을 지키는 것</strong>입니다.
+              </div>
+            </div>
+
+            <div class="fintox-node" style="background: var(--blue-light); border-color: #bfdbfe;">
+              <div class="section-mini-title">WHY IT MATTERS</div>
+              <div class="insight-title" style="margin-top:4px;">가계부와 다른 점</div>
+              <div style="font-size: 13px; color: #1e3a8a; line-height: 1.5; margin-bottom:14px;">
+                일반 가계부가 "어디에 얼마를 썼는지" 보여준다면, 청사진은 그 소비가 <strong>목표 달성 시점과 원저축 계획에 어떤 영향을 주는 지 연결</strong>합니다.
+              </div>
+              <div style="background: white; padding: 12px 16px; border-radius: 10px; border: 1px solid #93c5fd; font-size: 13px; font-weight: 700; color: var(--blue); display: flex; align-items: center; justify-content: space-between;">
+                <span>↓ 최종 점검: 아래 5. Policy Action Center에서 준비도 및 실행 로드맵을 확인하세요</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Policy Action Center (요청 반영: 실행준비도 FINANCIAL READINESS 영역 추가) -->
+        <section id="sec-action" class="card">
+          <div class="card-header">
+            <div class="card-title">5. Policy Action Center</div>
+            <div class="wow-tag">Financial Readiness Roadmap</div>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">독립 시점까지 필요한 금융 준비 및 체크리스트를 하나의 연동 로드맵으로 관리합니다.</p>
+
+          <!-- 🔥 추가된 [실행 준비도] 카드 영역 🔥 -->
+          <div class="readiness-box">
+            <div class="section-mini-title">FINANCIAL READINESS</div>
+            <div class="readiness-header">
+              <div class="readiness-title">실행 준비도</div>
+              <div class="readiness-score" id="readiness-score-text">33%</div>
+            </div>
+            
+            <div class="readiness-bar-track">
+              <div class="readiness-bar-fill" id="readiness-bar-fill"></div>
+            </div>
+
+            <div class="checklist-group">
+              <label class="check-item checked" onclick="toggleCheck(this)">
+                <input type="checkbox" checked onchange="updateReadiness()">
+                <span>목표 설정 완료</span>
+              </label>
+              <label class="check-item checked" onclick="toggleCheck(this)">
+                <input type="checkbox" checked onchange="updateReadiness()">
+                <span>금융현황 입력</span>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onchange="updateReadiness()">
+                <span>청년 버팀목 자격 재확인</span>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onchange="updateReadiness()">
+                <span>전세보증 안전성 체크</span>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onchange="updateReadiness()">
+                <span>정책 신청일 알림 설정</span>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onchange="updateReadiness()">
+                <span>필요서류 체크</span>
+              </label>
+            </div>
+
+            <div class="readiness-info-note">
+              📌 <strong>중요:</strong> 준비도는 대출 승인확률이 아닙니다. 목표 실행에 필요한 정보·서류·행동의 완료율입니다.
+            </div>
+          </div>
+
+          <!-- 타임라인 수직연동 로드맵 -->
+          <div class="action-flow-container">
+            
+            <!-- STEP 1 -->
+            <div class="action-step-node completed">
+              <div class="step-icon-circle">D-730</div>
+              <div class="step-content-card">
+                <div class="step-header">
+                  <div class="step-title">목표 설정 및 저축 플랜 확정</div>
+                  <span class="badge badge-eligible">✅ 완료 (+20XP)</span>
+                </div>
+                <div class="step-desc">버팀목 대출(8,000만 원) 기반 필요 자금 1,400만 원 저축 목표 세팅 완료.</div>
+              </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="action-step-node active">
+              <div class="step-icon-circle">D-600</div>
+              <div class="step-content-card">
+                <div class="step-header">
+                  <div class="step-title">FinTox 결제 연동 & 월저축 자동화</div>
+                  <span class="badge badge-conditional">🔵 진행 중</span>
+                </div>
+                <div class="step-desc">월 58만 원 저축 달성을 위해 야간 배달 등 비정기 지출 누수를 상시점검 및 방지.</div>
+              </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="action-step-node">
+              <div class="step-icon-circle">D-300</div>
+              <div class="step-content-card">
+                <div class="step-header">
+                  <div class="step-title">버팀목 대출 사전 자격 재검증</div>
+                  <span class="badge badge-ended">⏳ 예정</span>
+                </div>
+                <div class="step-desc">무주택 세대주 요건 및 소득·자산 변동 내역 재점검 (서류 서류 자동 가공).</div>
+              </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="action-step-node" style="padding-bottom:0;">
+              <div class="step-icon-circle" style="border-color:var(--navy); color:var(--navy);">D-DAY</div>
+              <div class="step-content-card" style="border-color:var(--navy);">
+                <div class="step-header">
+                  <div class="step-title" style="color:var(--navy);">전세대출 실행 및 독립 완료</div>
+                  <span class="badge badge-not" style="background:#f1f5f9; color:var(--navy);">🎯 최종 목표</span>
+                </div>
+                <div class="step-desc">마포구 전세보증금 잔금 치르고 독립 완료.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 최종 마무리 통합 연결 카드 -->
+          <div class="action-summary-card">
+            <div style="font-size: 11px; font-weight: 800; color: #93c5fd; letter-spacing: 0.5px; text-transform: uppercase;">READY TO START</div>
+            <div style="font-size: 18px; font-weight: 800; margin: 6px 0 8px;">마포구 전세 독립 플랜이 준비되었습니다</div>
+            <div style="font-size: 13px; color: #94a3b8; line-height: 1.5;">
+              선택하신 정책 대출과 월 저축 플랜이 결합하여 목표 달성 가능성이 **98%**로 계산되었습니다.
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script>
+    let currentNeededSavings = 1400; // 기본 추가 필요금액 (만 원)
+
+    function scrollToSection(secId) {
+      document.getElementById(secId).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 정책 선택 시 실시간 연동
+    function selectPolicy(id, loanAmount, policyName, statusType) {
+      document.querySelectorAll('.wf-row').forEach(row => row.classList.remove('selected'));
+      document.querySelectorAll('.reason-box').forEach(box => box.classList.remove('active'));
+
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('selected');
+      }
+      const targetBox = document.getElementById(id);
+      if (targetBox) targetBox.classList.add('active');
+
+      if (loanAmount > 0) {
+        const totalGoal = 10000; 
+        const currentAsset = 600; 
+        const neededEquity = totalGoal - loanAmount; 
+        currentNeededSavings = neededEquity - currentAsset; 
+        const monthlySave = (currentNeededSavings / 24).toFixed(1); 
+
+        // Blueprint 갱신
+        document.getElementById('applied-policy-tag').innerText = "적용 정책: " + policyName;
+        document.getElementById('bp-loan-val').innerText = loanAmount.toLocaleString() + "만 원";
+        document.getElementById('bp-equity-val').innerText = neededEquity.toLocaleString() + "만 원";
+
+        // Funding Map 갱신
+        document.getElementById('map-loan-text').innerText = loanAmount.toLocaleString() + "만 원";
+        document.getElementById('map-save-text').innerText = currentNeededSavings.toLocaleString() + "만 원";
+        document.getElementById('map-loan-bar').style.width = (loanAmount / 100) + "%";
+        document.getElementById('map-save-bar').style.width = (currentNeededSavings / 100) + "%";
+
+        // AI Insight 배너 갱신
+        document.getElementById('insight-desc-text').innerHTML = 
+          `정책금융을 <strong>${loanAmount.toLocaleString()}만 원</strong>으로 가정하면 필요한 자기자본은 <strong>${neededEquity.toLocaleString()}만 원</strong>입니다. 현재 600만 원이 있으므로 <strong>추가 ${currentNeededSavings.toLocaleString()}만 원 · 월 약 ${monthlySave}만 원</strong>이 핵심 실행목표입니다.`;
+
+        // Simulator 갱신
+        document.getElementById('sim-slider').value = Math.round(monthlySave);
+        runSim(Math.round(monthlySave));
+      }
+    }
+
+    // 시뮬레이터 실시간 계산
+    function runSim(val) {
+      document.getElementById('sim-display-text').innerText = val + "만 원";
+      document.getElementById('plan-a-val').innerText = val + "만 원";
+
+      const monthsNeeded = Math.ceil(currentNeededSavings / val);
+      document.getElementById('sim-months-text').innerText = `약 ${monthsNeeded}개월`;
+
+      const diff = monthsNeeded - 24;
+      const delayElem = document.getElementById('sim-delay-text');
+      
+      if (diff > 0) {
+        delayElem.innerText = `기존 목표보다 약 ${diff}개월 늦어집니다.`;
+        setPlan('B');
+      } else if (diff < 0) {
+        delayElem.innerText = `기존 목표보다 약 ${Math.abs(diff)}개월 단축됩니다!`;
+        setPlan('A');
+      } else {
+        delayElem.innerText = `기존 목표 기간과 정확히 일치합니다.`;
+        setPlan('A');
+      }
+    }
+
+    function setPlan(planType) {
+      if(planType === 'A') {
+        document.getElementById('plan-a-box').classList.add('active');
+        document.getElementById('plan-b-box').classList.remove('active');
+      } else {
+        document.getElementById('plan-b-box').classList.add('active');
+        document.getElementById('plan-a-box').classList.remove('active');
+      }
+    }
+
+    // 🔥 실행 준비도 체크박스 및 퍼센트 계산 함수 🔥
+    function toggleCheck(labelElem) {
+      const checkbox = labelElem.querySelector('input[type="checkbox"]');
+      if (checkbox.checked) {
+        labelElem.classList.add('checked');
+      } else {
+        labelElem.classList.remove('checked');
+      }
+    }
+
+    function updateReadiness() {
+      const total = document.querySelectorAll('.checklist-group input[type="checkbox"]').length;
+      const checked = document.querySelectorAll('.checklist-group input[type="checkbox"]:checked').length;
+      const percent = Math.round((checked / total) * 100);
+
+      document.getElementById('readiness-score-text').innerText = percent + '%';
+      document.getElementById('readiness-bar-fill').style.width = percent + '%';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initScrollSpy();
+    });
+
+    // ScrollSpy
+    function initScrollSpy() {
+      const sections = document.querySelectorAll('#page-dashboard section');
+      const navItems = document.querySelectorAll('.lnb-item');
+
+      window.onscroll = () => {
+        let current = '';
+        sections.forEach(sec => {
+          const secTop = sec.offsetTop;
+          if (pageYOffset >= secTop - 120) {
+            current = sec.getAttribute('id');
+          }
+        });
+
+        navItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('onclick').includes(current)) {
+            item.classList.add('active');
+          }
+        });
+      };
+    }
+  </script>
+</body>
+</html>

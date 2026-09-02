@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>청년 정책금융 AI PB 플랫폼</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap');
+
+    :root {
+      --navy: #172554;
+      --blue: #2563eb;
+      --blue2: #3b82f6;
+      --sky: #eff6ff;
+      --mint: #10b981;
+      --green: #059669;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --purple: #7c3aed;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --shadow: 0 10px 30px rgba(23,37,84,.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 헤더 */
+    header {
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .login-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* 메인 검색 레이아웃 */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      margin-top: -40px; /* 중앙보다 살짝 위로 배치 */
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--sky);
+      color: var(--blue);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      color: var(--navy);
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    /* 1회용 검색창 스타일 */
+    .search-box {
+      width: 100%;
+      max-width: 640px;
+      background: var(--card);
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 8px 12px 8px 20px;
+      display: flex;
+      align-items: center;
+      box-shadow: var(--shadow);
+      transition: all 0.2s ease;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--blue);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.12);
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .search-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .search-btn {
+      background-color: var(--navy);
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .search-btn:hover {
+      background-color: var(--blue);
+    }
+
+    /* 태그 추천 */
+    .recommend-tags {
+      margin-top: 20px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tag {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .tag:hover {
+      border-color: var(--blue2);
+      color: var(--blue);
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="badge">청년 정책금융 AI PB</div>
+    <h1 class="title">꿈을 말하면, 길을 잇습니다</h1>
+    <p class="subtitle">어려운 정책금융, 필요한 목표나 상황을 자연스럽게 입력해보세요.</p>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="예: 청년도약계좌 조건이나 집 구할 때 대출 알아봐줘">
+      <button class="search-btn" onclick="goToSteps()">분석하기</button>
+    </div>
+
+    <div class="recommend-tags">
+      <span class="tag" onclick="fillTag(this)"># 전세자금 대출</span>
+      <span class="tag" onclick="fillTag(this)"># 청년도약계좌</span>
+      <span class="tag" onclick="fillTag(this)"># 월세 지원</span>
+      <span class="tag" onclick="fillTag(this)"># 목돈 만들기</span>
+    </div>
+  </main>
+
+  <script>
+    function goToSteps() {
+      window.location.href = "steps.html";
+    }
+
+    function fillTag(el) {
+      document.getElementById('searchInput').value = el.innerText.replace('# ', '');
+    }
+
+    document.getElementById('searchInput').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') goToSteps();
+    });
+  </script>
+
+</body>
+</html>
