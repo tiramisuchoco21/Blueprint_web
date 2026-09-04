@@ -6,6 +6,8 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from app.schemas.finance import DebtItem
+
 GoalType = Literal["jeonse", "purchase", "marriage", "lumpsum"]
 JobType = Literal["regular", "contract", "freelance", "student", "unemployed"]
 MaritalStatus = Literal["single", "engaged", "married"]
@@ -30,6 +32,15 @@ class UserProfile(BaseModel):
     # ── 현재 재무 ───────────────────────────────────────────
     current_cash: Optional[int] = Field(None, ge=0, description="현금·예적금 합계(원)")
     monthly_saving: Optional[int] = Field(None, ge=0, description="월 순저축 가능액(원)")
+    monthly_income_net: Optional[int] = Field(
+        None, ge=0, description="월 실수령액(원). DSR 판정에 쓴다"
+    )
+
+    #: 보유 부채 목록. 여러 건을 다룰 수 있다 (학자금 + 신용대출 등).
+    debts: list["DebtItem"] = Field(default_factory=list)
+
+    # ── 하위호환: 단일 부채 필드 ────────────────────────────
+    # 기존 API 사용처를 깨지 않기 위해 남겨둔다. debts 가 비어 있을 때만 쓰인다.
     existing_debt: Optional[int] = Field(None, ge=0, description="기존 대출 잔액(원)")
     existing_debt_rate: Optional[float] = Field(
         None, ge=0.0, le=1.0, description="기존 대출 금리. 5.2%→0.052"
@@ -51,6 +62,18 @@ class UserProfile(BaseModel):
                                                       description="청약통장 가입연수")
     housing_subscription_count: Optional[int] = Field(None, ge=0,
                                                       description="청약통장 납입횟수")
+
+    def debt_list(self) -> list[DebtItem]:
+        """debts 를 우선하고, 없으면 하위호환 필드를 1건짜리 목록으로 바꾼다."""
+        if self.debts:
+            return self.debts
+        if self.existing_debt:
+            return [DebtItem(kind="other", balance=self.existing_debt,
+                             rate=self.existing_debt_rate or 0.0)]
+        return []
+
+    def total_debt(self) -> int:
+        return sum(d.balance for d in self.debt_list())
 
     def income_for_policy(self) -> Optional[int]:
         """정책 소득기준은 기혼·예비신혼이면 부부합산을 본다."""

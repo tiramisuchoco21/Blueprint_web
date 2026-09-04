@@ -45,9 +45,17 @@ def principal_from_payment(payment: int, annual_rate: float, months: int) -> int
 
 
 def dti_capped_principal(annual_income: int, dti_max: float,
-                         annual_rate: float, months: int) -> int:
-    """DTI 제약이 허용하는 최대 원금."""
-    monthly_capacity = int(annual_income * dti_max / 12)
+                         annual_rate: float, months: int,
+                         existing_monthly_payment: int = 0) -> int:
+    """DTI 제약이 허용하는 최대 원금.
+
+    ⚠️ DTI는 **기존 부채 상환액을 포함한** 총 원리금 기준이다.
+       이 인자를 빼먹으면 '빚을 갚아도 정책대출 한도가 그대로'인 상태가 된다.
+       (부채 상환 → 여력 확보 → 한도 증가 라는 연결이 끊긴다)
+    """
+    monthly_capacity = int(annual_income * dti_max / 12) - max(existing_monthly_payment, 0)
+    if monthly_capacity <= 0:
+        return 0
     return principal_from_payment(monthly_capacity, annual_rate, months)
 
 

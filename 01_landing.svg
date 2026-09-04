@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+<rect x="0" y="0" width="1440" height="900" fill="#f5f7fb"/>
+<rect x="0" y="0" width="1440" height="900" fill="#f5f7fb"/>
+<rect x="649.58" y="287" width="140.83" height="31" rx="15.5" fill="#eff6ff"/>
+<text x="663.58" y="308" font-family="'Noto Sans KR', Inter, sans-serif" font-size="13" font-weight="700" fill="#2563eb" xml:space="preserve">청년 정책금융 AI PB</text>
+<text x="520.34" y="380" font-family="'Noto Sans KR', Inter, sans-serif" font-size="36" font-weight="800" letter-spacing="-0.5" fill="#172554" xml:space="preserve">꿈을 말하면, 길을 잇습니다</text>
+<text x="516.91" y="419" font-family="'Noto Sans KR', Inter, sans-serif" font-size="15" font-weight="400" fill="#6b7280" xml:space="preserve">어려운 정책금융, 필요한 목표나 상황을 자연스럽게 입력해보세요.</text>
+<rect x="400" y="455" width="640" height="65" rx="16" fill="#ffffff"/>
+<rect x="401" y="456" width="638" height="63" rx="15" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+<rect x="422" y="475.5" width="500.8" height="24" fill="#ffffff"/>
+<text x="422" y="494.5" font-family="'Noto Sans KR', Inter, sans-serif" font-size="16" font-weight="400" fill="#9ca3af" xml:space="preserve">예: 청년도약계좌 조건이나 집 구할 때 대출 알아봐줘</text>
+<rect x="922.8" y="465" width="103.2" height="45" rx="10" fill="#172554"/>
+<text x="946.8" y="494" font-family="'Noto Sans KR', Inter, sans-serif" font-size="15" font-weight="700" fill="#ffffff" xml:space="preserve">분석하기</text>
+<rect x="503.23" y="540" width="112.27" height="33" rx="8" fill="#ffffff"/>
+<rect x="503.73" y="540.5" width="111.27" height="32" rx="7.5" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="516.23" y="562" font-family="'Noto Sans KR', Inter, sans-serif" font-size="13" font-weight="400" fill="#6b7280" xml:space="preserve"># 전세자금 대출</text>
+<rect x="623.5" y="540" width="108.63" height="33" rx="8" fill="#ffffff"/>
+<rect x="624" y="540.5" width="107.63" height="32" rx="7.5" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="636.5" y="562" font-family="'Noto Sans KR', Inter, sans-serif" font-size="13" font-weight="400" fill="#6b7280" xml:space="preserve"># 청년도약계좌</text>
+<rect x="740.13" y="540" width="88.34" height="33" rx="8" fill="#ffffff"/>
+<rect x="740.63" y="540.5" width="87.34" height="32" rx="7.5" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="753.13" y="562" font-family="'Noto Sans KR', Inter, sans-serif" font-size="13" font-weight="400" fill="#6b7280" xml:space="preserve"># 월세 지원</text>
+<rect x="836.47" y="540" width="100.3" height="33" rx="8" fill="#ffffff"/>
+<rect x="836.97" y="540.5" width="99.3" height="32" rx="7.5" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="849.47" y="562" font-family="'Noto Sans KR', Inter, sans-serif" font-size="13" font-weight="400" fill="#6b7280" xml:space="preserve"># 목돈 만들기</text>
+</svg>

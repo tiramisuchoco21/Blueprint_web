@@ -100,17 +100,17 @@ def maturity_fit(policy: dict, profile: UserProfile) -> Optional[RuleCheck]:
     )
 
 
-def estimate_amount(policy: dict, profile: UserProfile,
-                    rate: float | None) -> tuple[Optional[int], Optional[str]]:
+def estimate_amount(policy: dict, profile: UserProfile, rate: float | None,
+                    debt_monthly: int = 0) -> tuple[Optional[int], Optional[str], Optional[str]]:
     """정책금융 활용 가능 예상액. '승인액'이 아니라 '상품상 최대 검토가능액'이다."""
     spec = policy.get("amount", {})
     kind = spec.get("type", "none")
     if kind == "none":
-        return None, policy.get("benefit_note")
+        return None, policy.get("benefit_note"), None
 
     base = _resolve(profile, spec["base_field"]) or 0
     if not base:
-        return None, None
+        return None, None, None
 
     if kind == "ratio_capped":
         ratio_amount = int(base * spec["ratio"])
@@ -120,7 +120,10 @@ def estimate_amount(policy: dict, profile: UserProfile,
             base=_won(base), ratio_pct=f"{spec['ratio']:.0%}",
             ratio_amount=_won(ratio_amount), cap=_won(cap),
         )
-        return amount, basis
+        binding = "RATIO" if ratio_amount <= cap else "PRODUCT_CAP"
+        # 전세대출 한도는 보증금 비율·상품한도로 정해진다. DTI가 병목이 아니므로
+        # 기존 부채를 갚아도 이 한도는 늘어나지 않는다.
+        return amount, basis, binding
 
     if kind == "ltv_dti_capped":
         ltv_amount = int(base * spec["ltv_max"])
@@ -128,7 +131,8 @@ def estimate_amount(policy: dict, profile: UserProfile,
         income = profile.income_for_policy() or 0
         months = policy.get("loan_months", 360)
         dti_amount = (
-            calculator.dti_capped_principal(income, spec["dti_max"], rate or 0.04, months)
+            calculator.dti_capped_principal(income, spec["dti_max"], rate or 0.04,
+                                            months, debt_monthly)
             if income else cap
         )
         amount = min(ltv_amount, cap, dti_amount)
@@ -136,14 +140,37 @@ def estimate_amount(policy: dict, profile: UserProfile,
             base=_won(base), ltv_pct=f"{spec['ltv_max']:.0%}", ltv_amount=_won(ltv_amount),
             dti_pct=f"{spec['dti_max']:.0%}", cap=_won(cap),
         )
-        return amount, basis
+        # 셋 중 무엇이 한도를 잡고 있는가. '빚을 갚아도 한도가 안 늘어나는' 이유를
+        # 설명하려면 이 정보가 필요하다.
+        binding = min(
+            [("LTV", ltv_amount), ("PRODUCT_CAP", cap), ("DTI", dti_amount)],
+            key=lambda x: x[1],
+        )[0]
+        basis += f" · 현재 병목: {BINDING_LABEL[binding]}"
+        if debt_monthly and binding == "DTI":
+            basis += f" (기존 부채 월 상환액 {_won(debt_monthly)}이 여력을 차지)"
+        return amount, basis, binding
 
-    return None, None
+    return None, None, None
 
 
-def evaluate(policy: dict, profile: UserProfile,
-             today: date | None = None) -> EligibilityResult:
+BINDING_LABEL = {
+    "LTV": "LTV 한도", "PRODUCT_CAP": "상품 최대한도",
+    "DTI": "DTI(소득 대비 상환부담)", "RATIO": "보증금 대비 비율 한도",
+}
+
+
+def evaluate(policy: dict, profile: UserProfile, today: date | None = None,
+             debt_monthly: int | None = None) -> EligibilityResult:
+    """debt_monthly 를 명시하면 그 값으로 DTI를 계산한다.
+
+    '부채를 다 갚았다면 한도가 얼마가 되는가'(debt_monthly=0)를 물어볼 때 쓴다.
+    """
     today = today or POLICY_BASE_DATE
+    if debt_monthly is None:
+        from app.engine import debt as debt_engine
+
+        debt_monthly = debt_engine.total_monthly_due(profile)
     src = policy.get("source", {})
     common = dict(
         policy_id=policy["policy_id"], policy_name=policy["name"],
@@ -190,25 +217,35 @@ def evaluate(policy: dict, profile: UserProfile,
     rate_spec = policy.get("rate", {})
     terms = calculator.build_rate(rate_spec.get("build", {}), profile)
     final_rate = terms.final_rate if terms else rate_spec.get("max")
-    amount, basis = (None, None)
+    amount, basis, binding = (None, None, None)
     if status in ("ELIGIBLE", "CONDITIONAL"):
-        amount, basis = estimate_amount(policy, profile, final_rate)
+        amount, basis, binding = estimate_amount(policy, profile, final_rate, debt_monthly)
 
     return EligibilityResult(
         status=status, checks=checks, missing_fields=missing,
-        estimated_amount=amount, amount_basis=basis,
+        estimated_amount=amount, amount_basis=basis, binding_constraint=binding,
         rate_min=rate_spec.get("min"), rate_max=rate_spec.get("max"),
         reason=reason, **common,
     )
 
 
-def waterfall(profile: UserProfile, today: date | None = None) -> list[EligibilityResult]:
+def waterfall(profile: UserProfile, today: date | None = None,
+              debt_monthly: int | None = None) -> list[EligibilityResult]:
     """정책 워터폴 — Eligible / Conditional / Not Eligible / Ended 를 한 번에."""
     order = {"ELIGIBLE": 0, "CONDITIONAL": 1, "NOT_ELIGIBLE": 2, "ENDED": 3}
     results = [
-        evaluate(p, profile, today) for p in policy_db.policies_for_goal(profile.goal_type)
+        evaluate(p, profile, today, debt_monthly)
+        for p in policy_db.policies_for_goal(profile.goal_type)
     ]
     return sorted(results, key=lambda r: (order[r.status], -(r.estimated_amount or 0)))
+
+
+def capacity_with_debt_payment(profile: UserProfile, debt_monthly: int) -> int:
+    """기존 부채 월 상환액이 이만큼일 때 확보 가능한 정책대출 한도.
+
+    부채 엔진이 '갚으면 한도가 얼마나 늘어나는지' 계산할 때 주입받는 함수다.
+    """
+    return total_policy_capacity(waterfall(profile, debt_monthly=debt_monthly))
 
 
 def select_primary_loan(results: list[EligibilityResult]) -> EligibilityResult | None:

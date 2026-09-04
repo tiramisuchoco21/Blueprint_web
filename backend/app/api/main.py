@@ -148,6 +148,28 @@ def ask(req: AskRequest) -> dict:
     ).model_dump()
 
 
+# ── 부채: 갚기 + 끼고 사기 ───────────────────────────────────
+class DebtRequest(BaseModel):
+    persona: Optional[str] = "persona1"
+    profile: Optional[UserProfile] = None
+
+
+@app.post("/api/debt")
+def debt(req: DebtRequest) -> dict:
+    """부채 전략 — 상환 배분 시나리오 + 신규 대출 후 DSR.
+
+    '대출금을 갚는 것'과 '대출을 끼고 사는 것'을 한 응답으로 돌려준다.
+    두 축은 strategy.capacity_gain_if_cleared 로 이어진다:
+    부채를 갚으면 DTI 여력이 생겨 정책대출 한도가 얼마나 늘어나는가.
+    """
+    p = _profile(req.persona, req.profile)
+    primary = None
+    from app.engine import rules as _rules
+
+    primary = _rules.select_primary_loan(_rules.waterfall(p))
+    return services.debt_summary(p, primary) or {"has_debt": False}
+
+
 @app.get("/api/policies")
 def policies() -> dict:
     return {"base_date": str(POLICY_BASE_DATE),

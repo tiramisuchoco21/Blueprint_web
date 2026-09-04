@@ -74,6 +74,91 @@ class DebtDecision(BaseModel):
     note: Optional[str] = None
 
 
+DebtKind = Literal["student", "credit", "card", "mortgage", "jeonse", "other"]
+
+DEBT_LABEL: dict[str, str] = {
+    "student": "학자금대출", "credit": "신용대출", "card": "카드론·현금서비스",
+    "mortgage": "주택담보대출", "jeonse": "전세자금대출", "other": "기타 대출",
+}
+
+
+class DebtItem(BaseModel):
+    """보유 부채 1건."""
+
+    kind: DebtKind = "other"
+    name: str = ""
+    balance: int = Field(ge=0, description="잔액(원)")
+    rate: float = Field(ge=0.0, le=1.0, description="연 금리. 5.2%→0.052")
+    remaining_months: Optional[int] = Field(
+        None, ge=0, le=600, description="남은 상환 개월수. 없으면 이자만 내는 것으로 본다"
+    )
+    monthly_payment: Optional[int] = Field(
+        None, ge=0, description="실제 월 상환액. 없으면 계산한다"
+    )
+    prepayable: bool = Field(True, description="중도상환 가능 여부")
+
+    def model_post_init(self, __context) -> None:  # noqa: D105
+        if not self.name:
+            self.name = DEBT_LABEL.get(self.kind, "대출")
+
+
+class RepaymentPlan(BaseModel):
+    """부채 1건의 상환 계획."""
+
+    kind: DebtKind
+    name: str
+    balance: int
+    rate: float
+    monthly_payment: int
+    months_to_clear: Optional[int] = Field(None, description="완제까지 개월수")
+    total_interest: int = Field(0, description="완제까지 총이자")
+    interest_only: bool = Field(False, description="원금이 줄지 않는 상태(이자만 상환)")
+
+
+class DsrCheck(BaseModel):
+    """신규 대출 실행 후 상환 부담. '대출 끼고 사는' 쪽의 안전장치."""
+
+    monthly_income: int
+    existing_debt_payment: int
+    new_loan_payment: int
+    total_payment: int
+    ratio: float = Field(description="총 원리금 ÷ 월 소득")
+    limit: float = Field(0.40, description="경고 기준선")
+    over_limit: bool = False
+    remaining_after_payment: int = Field(0, description="상환 후 월 가처분")
+
+
+class AllocationScenario(BaseModel):
+    """월 여유자금을 상환과 저축에 어떻게 나눌지 — 시나리오 1건."""
+
+    key: Literal["SAVE_FIRST", "REPAY_FIRST", "BALANCED"]
+    label: str
+    monthly_to_repay: int
+    monthly_to_save: int
+    debt_cleared_month: Optional[int] = None
+    total_interest_paid: int = 0
+    equity_at_horizon: int = Field(0, description="목표시점 자기자본")
+    policy_capacity_at_horizon: int = Field(0, description="목표시점 정책대출 한도")
+    reachable: bool = False
+    shortfall: int = 0
+    note: str = ""
+
+
+class DebtStrategy(BaseModel):
+    """상환 전략 종합. 추천은 룰이 정하고 LLM은 서술만 한다."""
+
+    total_balance: int
+    total_monthly_payment: int
+    weighted_rate: float = 0.0
+    plans: list[RepaymentPlan] = []
+    scenarios: list[AllocationScenario] = []
+    recommended: Optional[str] = None
+    rationale_key: str = ""
+    capacity_gain_if_cleared: int = Field(
+        0, description="부채를 다 갚았을 때 늘어나는 정책대출 한도(원)"
+    )
+
+
 class LoanTerms(BaseModel):
     """금리 빌드업 + 월 상환액."""
 

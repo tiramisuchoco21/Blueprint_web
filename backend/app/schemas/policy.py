@@ -45,6 +45,11 @@ class EligibilityResult(BaseModel):
     missing_fields: list[str] = []
     estimated_amount: Optional[int] = Field(None, description="정책금융 활용 가능 예상액(원)")
     amount_basis: Optional[str] = Field(None, description="금액 산출 근거 문장")
+    binding_constraint: Optional[str] = Field(
+        None,
+        description="한도를 잡고 있는 제약. LTV / PRODUCT_CAP / DTI / RATIO. "
+                    "DTI가 아니면 기존 부채를 갚아도 한도는 늘어나지 않는다.",
+    )
     rate_min: Optional[float] = None
     rate_max: Optional[float] = None
     source_name: str = ""

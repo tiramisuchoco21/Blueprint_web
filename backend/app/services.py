@@ -13,7 +13,10 @@ from functools import lru_cache
 
 from app.ai import explainer, nudge as nudge_ai, resolver, signal_extractor
 from app.config import FIXTURE_DIR
-from app.engine import calculator, impulse, rules, session as session_engine, signals
+from app.engine import (
+    calculator, debt as debt_engine, impulse, policy_db, rules,
+    session as session_engine, signals,
+)
 from app.schemas.consumption import Transaction
 from app.schemas.profile import UserProfile, profile_with
 
@@ -66,6 +69,8 @@ def analyze(profile: UserProfile, with_ai: bool = True) -> dict:
                                 if not _is_verified(p.policy_id)],
     }
     # AI 텍스트는 마지막에. 실패해도 위 내용은 이미 완성돼 있다.
+    out["debt"] = debt_summary(profile, primary)
+
     out["explain"] = (explainer.explain(feas, waterfall) if with_ai
                       else None)
     if out["explain"] is not None:
@@ -73,8 +78,48 @@ def analyze(profile: UserProfile, with_ai: bool = True) -> dict:
     return out
 
 
+def debt_summary(profile: UserProfile, primary=None) -> dict | None:
+    """부채 — '갚는 것'과 '끼고 사는 것'을 한 묶음으로 돌려준다.
+
+    · strategy  : 상환 vs 저축 배분 3시나리오 + 추천 (갚는 쪽)
+    · dsr       : 신규 정책대출 실행 후 월 상환 부담 (끼고 사는 쪽)
+    · 두 축은 capacity_gain_if_cleared 로 이어진다.
+    """
+    debts = profile.debt_list()
+    monthly_available = profile.monthly_saving or 0
+
+    # 신규 정책대출을 실행했을 때의 월 상환액
+    new_payment = 0
+    if primary and primary.estimated_amount:
+        pol = policy_db.get_policy(primary.policy_id) or {}
+        months = pol.get("loan_months")
+        rate = primary.rate_max or (pol.get("rate", {}) or {}).get("max")
+        if months and rate:
+            new_payment = calculator.monthly_payment(
+                primary.estimated_amount, rate, months
+            )
+    dsr = debt_engine.dsr_check(profile, new_payment)
+
+    if not debts:
+        return {"has_debt": False, "strategy": None, "dsr": dsr.model_dump(),
+                "new_loan_monthly_payment": new_payment}
+
+    strategy = debt_engine.build_strategy(
+        profile,
+        lambda dm: rules.capacity_with_debt_payment(profile, dm),
+        monthly_available,
+    )
+    return {
+        "has_debt": True,
+        "strategy": strategy.model_dump(),
+        "dsr": dsr.model_dump(),
+        "new_loan_monthly_payment": new_payment,
+        "decision": (calculator.debt_decision(profile).model_dump()
+                     if calculator.debt_decision(profile) else None),
+    }
+
+
 def _is_verified(policy_id: str) -> bool:
-    from app.engine import policy_db
     p = policy_db.get_policy(policy_id)
     return bool(p and p.get("verified"))
 

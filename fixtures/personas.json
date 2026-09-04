@@ -7,7 +7,16 @@
     "region": "서울 마포구",
     "current_cash": 6000000,
     "monthly_saving": 550000,
-    "existing_debt": 4000000,
+    "monthly_income_net": 2350000,
+    "debts": [
+      {
+        "kind": "student",
+        "balance": 4000000,
+        "rate": 0.017,
+        "remaining_months": 48,
+        "_note": "금리·잔여기간은 데모 가정값. 페르소나 문서에는 잔액 400만만 명시돼 있다."
+      }
+    ],
     "age": 26,
     "annual_income": 32000000,
     "job_type": "regular",
@@ -23,8 +32,17 @@
     "region": "경기",
     "current_cash": 200000000,
     "monthly_saving": 2000000,
+    "monthly_income_net": 5800000,
     "existing_debt": 25000000,
     "existing_debt_rate": 0.052,
+    "debts": [
+      {
+        "kind": "credit",
+        "balance": 25000000,
+        "rate": 0.052,
+        "_note": "만기일시 가정 — 이자만 상환 중. 페르소나 문서의 '연 5.2% 신용대출 2,500만'."
+      }
+    ],
     "age": 33,
     "spouse_age": 35,
     "annual_income": 42000000,

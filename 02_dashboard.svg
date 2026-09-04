@@ -1,0 +1,380 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="4388" viewBox="0 0 1440 4388">
+<rect x="0" y="0" width="1440" height="4388" fill="#f8fafc"/>
+<rect x="0" y="0" width="1425" height="4387.73" fill="#f8fafc"/>
+<rect x="0" y="0" width="1425" height="64" fill="#ffffff"/>
+<rect x="0" y="63" width="1425" height="1" fill="#e2e8f0"/>
+<rect x="32" y="16.5" width="30" height="30" rx="8" fill="#2563eb"/>
+<text x="39.63" y="38.5" font-family="Pretendard, sans-serif" font-size="16" font-weight="800" fill="#ffffff" xml:space="preserve">청</text>
+<text x="70" y="40" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">청사진</text>
+<text x="1186.84" y="37" font-family="Pretendard, sans-serif" font-size="12" font-weight="600" fill="#64748b" xml:space="preserve">👤 김민재 (전세독립) | 🟢 2026.09 DB</text>
+<rect x="96.5" y="88" width="220" height="45" rx="12" fill="#0f172a"/>
+<rect x="97" y="88.5" width="219" height="44" rx="11.5" fill="none" stroke="#0f172a" stroke-width="1"/>
+<text x="113.5" y="116" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#ffffff" xml:space="preserve">1. Policy Waterfall</text>
+<rect x="96.5" y="141" width="220" height="45" rx="12" fill="#ffffff"/>
+<rect x="97" y="141.5" width="219" height="44" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="113.5" y="169" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">2. Blueprint Wallet</text>
+<rect x="96.5" y="194" width="220" height="45" rx="12" fill="#ffffff"/>
+<rect x="97" y="194.5" width="219" height="44" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="113.5" y="222" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">3. What-if Simulator</text>
+<rect x="96.5" y="247" width="220" height="45" rx="12" fill="#ffffff"/>
+<rect x="97" y="247.5" width="219" height="44" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="113.5" y="275" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">4. FinTox 소비 진단</text>
+<rect x="96.5" y="300" width="220" height="45" rx="12" fill="#ffffff"/>
+<rect x="97" y="300.5" width="219" height="44" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="113.5" y="328" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">5. Policy Action Center</text>
+<rect x="340.5" y="88" width="988" height="49" rx="12" fill="#eff6ff"/>
+<rect x="341" y="88.5" width="987" height="48" rx="11.5" fill="none" stroke="#bfdbfe" stroke-width="1"/>
+<text x="361.5" y="118" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#2563eb" xml:space="preserve">🎯 분석 목표: "</text>
+<text x="449.86" y="118" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#2563eb" xml:space="preserve">2년 뒤 마포구 1억 전세 독립 원해. 현재 현금 600만 원 있어.</text>
+<text x="775.94" y="118" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#2563eb" xml:space="preserve">"</text>
+<rect x="340.5" y="169" width="988" height="824" rx="16" fill="#ffffff"/>
+<rect x="341" y="169.5" width="987" height="823" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="369.5" y="221" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">1. Policy Waterfall (4단계 정책 판정)</text>
+<rect x="1049.47" y="200.5" width="250.03" height="24" rx="6" fill="#eff6ff"/>
+<text x="1057.47" y="217.5" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#2563eb" xml:space="preserve">Eligible 정책 클릭 시 하단 세션에 자동 반영됩니다</text>
+<text x="369.5" y="258" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">원하는 정책을 선택하여 다음 세션의 시뮬레이션을 비교할 수 있습니다.</text>
+<rect x="371.5" y="274" width="164.83" height="47.5" fill="#f8fafc"/>
+<rect x="371.5" y="320.5" width="164.83" height="1" fill="#e2e8f0"/>
+<text x="385.5" y="303" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">상태</text>
+<rect x="536.33" y="274" width="250.25" height="47.5" fill="#f8fafc"/>
+<rect x="536.33" y="320.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="303" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">정책명</text>
+<rect x="786.58" y="274" width="217.53" height="47.5" fill="#f8fafc"/>
+<rect x="786.58" y="320.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="303" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">판정 의미</text>
+<rect x="1004.11" y="274" width="295.39" height="47.5" fill="#f8fafc"/>
+<rect x="1004.11" y="320.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="303" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">예상 혜택 / 비고</text>
+<rect x="371.5" y="321.5" width="928" height="53" fill="#e0f2fe"/>
+<rect x="371.5" y="321.5" width="4" height="53" fill="#2563eb"/>
+<rect x="371.5" y="373.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="387.5" y="336" width="74.61" height="24" rx="4" fill="#dcfce7"/>
+<text x="395.5" y="353" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#15803d" xml:space="preserve">🟢 Eligible</text>
+<rect x="536.33" y="373.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="353.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1e293b" xml:space="preserve">청년전용 버팀목 전세자금대출</text>
+<rect x="786.58" y="373.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="353.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">현재 핵심 조건 충족</text>
+<rect x="1004.11" y="373.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="353.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">최대 8,000만 원 (연 1.5%)</text>
+<rect x="371.5" y="426.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="389" width="74.61" height="24" rx="4" fill="#dcfce7"/>
+<text x="393.5" y="406" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#15803d" xml:space="preserve">🟢 Eligible</text>
+<rect x="536.33" y="426.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="406.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1e293b" xml:space="preserve">서울시 청년 임차보증금 대출</text>
+<rect x="786.58" y="426.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="406.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">지자체 지원조건 충족</text>
+<rect x="1004.11" y="426.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="406.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">최대 7,000만 원 (연 2.0% 이자지원)</text>
+<rect x="371.5" y="479.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="442" width="74.61" height="24" rx="4" fill="#dcfce7"/>
+<text x="393.5" y="459" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#15803d" xml:space="preserve">🟢 Eligible</text>
+<rect x="536.33" y="479.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="459.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1e293b" xml:space="preserve">카카오뱅크 청년 전월세 대출</text>
+<rect x="786.58" y="479.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="459.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">모바일 간편신청 가능</text>
+<rect x="1004.11" y="479.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="459.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">최대 5,000만 원 (연 3.8%)</text>
+<rect x="371.5" y="532.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="495" width="97.66" height="24" rx="4" fill="#fef3c7"/>
+<text x="393.5" y="512" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#b45309" xml:space="preserve">🟡 Conditional</text>
+<rect x="536.33" y="532.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="512.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">청년도약계좌 패키지</text>
+<rect x="786.58" y="532.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="512.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">추가 조건·시점 확인 필요</text>
+<rect x="1004.11" y="532.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="512.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">24개월 만기 시점 재검증 필요</text>
+<rect x="371.5" y="585.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="548" width="97.66" height="24" rx="4" fill="#fef3c7"/>
+<text x="393.5" y="565" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#b45309" xml:space="preserve">🟡 Conditional</text>
+<rect x="536.33" y="585.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="565.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">청년 내일채움공제</text>
+<rect x="786.58" y="585.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="565.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">재직 기업 요건 확인 필요</text>
+<rect x="1004.11" y="585.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="565.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">5인 이상 제조·지식기반 기업 대상</text>
+<rect x="371.5" y="638.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="601" width="97.09" height="24" rx="4" fill="#fee2e2"/>
+<text x="393.5" y="618" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#b91c1c" xml:space="preserve">🔴 Not Eligible</text>
+<rect x="536.33" y="638.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="618.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">상용근로자 청년수당</text>
+<rect x="786.58" y="638.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="618.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">현재 조건상 요건 미충족</text>
+<rect x="1004.11" y="638.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="618.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">소득 구간 기준 초과</text>
+<rect x="371.5" y="691.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="654" width="97.09" height="24" rx="4" fill="#fee2e2"/>
+<text x="393.5" y="671" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#b91c1c" xml:space="preserve">🔴 Not Eligible</text>
+<rect x="536.33" y="691.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="671.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">청년 월세 특별지원</text>
+<rect x="786.58" y="691.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="671.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">전세 주택 목표와 불일치</text>
+<rect x="1004.11" y="691.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="671.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">월세 계약 거주자 전용 정책</text>
+<rect x="371.5" y="744.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="707" width="68.56" height="24" rx="4" fill="#f1f5f9"/>
+<text x="393.5" y="724" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#475569" xml:space="preserve">⚪ Ended</text>
+<rect x="536.33" y="744.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="724.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">중소기업 취업청년 전세대출</text>
+<rect x="786.58" y="744.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="724.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">신규지원 종료</text>
+<rect x="1004.11" y="744.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="724.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">2024년 12월부로 일몰 종료</text>
+<rect x="371.5" y="797.5" width="164.83" height="1" fill="#e2e8f0"/>
+<rect x="385.5" y="760" width="68.56" height="24" rx="4" fill="#f1f5f9"/>
+<text x="393.5" y="777" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#475569" xml:space="preserve">⚪ Ended</text>
+<rect x="536.33" y="797.5" width="250.25" height="1" fill="#e2e8f0"/>
+<text x="550.33" y="777.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">청년 희망적금</text>
+<rect x="786.58" y="797.5" width="217.53" height="1" fill="#e2e8f0"/>
+<text x="800.58" y="777.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">신규 가입 종료</text>
+<rect x="1004.11" y="797.5" width="295.39" height="1" fill="#e2e8f0"/>
+<text x="1018.11" y="777.5" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e293b" xml:space="preserve">청년도약계좌로 통합 전환</text>
+<rect x="369.5" y="815" width="930" height="149" rx="12" fill="#f8fafc"/>
+<rect x="370" y="815.5" width="929" height="148" rx="11.5" fill="none" stroke="#2563eb" stroke-width="1"/>
+<text x="390.5" y="853" font-family="Pretendard, sans-serif" font-size="15" font-weight="700" fill="#0f172a" xml:space="preserve">💡 [선택 적용됨] 청년전용 버팀목 전세자금대출</text>
+<text x="390.5" y="880" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">연령, 자산 조건이 100% 부합합니다. 대출 한도 8,000만 원 적용 시 목표 자기자본은 2,000만 원입니다.</text>
+<rect x="390.5" y="896" width="440" height="35" rx="6" fill="#ffffff"/>
+<rect x="391" y="896.5" width="439" height="34" rx="5.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="403.5" y="919" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#1e293b" xml:space="preserve">✅ 만 19세~34세 무주택 세대주 (통과)</text>
+<rect x="838.5" y="896" width="440" height="35" rx="6" fill="#ffffff"/>
+<rect x="839" y="896.5" width="439" height="34" rx="5.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="851.5" y="919" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#1e293b" xml:space="preserve">✅ 자산 기준 3.45억 원 이하 (통과)</text>
+<rect x="340.5" y="1025" width="988" height="639" rx="16" fill="#ffffff"/>
+<rect x="341" y="1025.5" width="987" height="638" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="369.5" y="1077" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">2. Blueprint Dashboard &amp; Policy Wallet</text>
+<rect x="1095.55" y="1056.5" width="203.95" height="24" rx="6" fill="#eff6ff"/>
+<text x="1103.55" y="1073.5" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#2563eb" xml:space="preserve">적용 정책: 청년전용 버팀목 전세자금대출</text>
+<rect x="369.5" y="1099" width="223.5" height="84" rx="12" fill="#f8fafc"/>
+<rect x="370" y="1099.5" width="222.5" height="83" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="440.92" y="1130" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">목표 전세보증금</text>
+<text x="453.95" y="1160" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">1억 원</text>
+<rect x="605" y="1099" width="223.5" height="84" rx="12" fill="#f8fafc"/>
+<rect x="605.5" y="1099.5" width="222.5" height="83" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="676.42" y="1130" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">정책대출 지원금</text>
+<text x="667.66" y="1160" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#2563eb" xml:space="preserve">8,000만 원</text>
+<rect x="840.5" y="1099" width="223.5" height="84" rx="12" fill="#f8fafc"/>
+<rect x="841" y="1099.5" width="222.5" height="83" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="917.44" y="1130" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">목표 자기자본</text>
+<text x="903.16" y="1160" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">2,000만 원</text>
+<rect x="1076" y="1099" width="223.5" height="84" rx="12" fill="#f8fafc"/>
+<rect x="1076.5" y="1099.5" width="222.5" height="83" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="1151.27" y="1130" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">현재 보유 자산</text>
+<text x="1148.27" y="1160" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#10b981" xml:space="preserve">600만 원</text>
+<rect x="369.5" y="1203" width="930" height="207" rx="12" fill="#f1f5f9"/>
+<text x="389.5" y="1239" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1e293b" xml:space="preserve">Goal Funding Map</text>
+<text x="389.5" y="1270" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#1e293b" xml:space="preserve">보유 금융자산 (현재 확보)</text>
+<text x="1228.92" y="1270" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#1e293b" xml:space="preserve">600만 원</text>
+<rect x="389.5" y="1278" width="890" height="10" rx="5" fill="#e2e8f0"/>
+<rect x="389.5" y="1278" width="53.39" height="10" rx="5" fill="#2563eb"/>
+<text x="389.5" y="1315" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#1e293b" xml:space="preserve">향후 24개월 저축 (필요 자기자본)</text>
+<text x="1217.02" y="1315" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#1e293b" xml:space="preserve">1,400만 원</text>
+<rect x="389.5" y="1323" width="890" height="10" rx="5" fill="#e2e8f0"/>
+<rect x="389.5" y="1323" width="124.59" height="10" rx="5" fill="#0f172a"/>
+<text x="389.5" y="1360" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#1e293b" xml:space="preserve">정책대출 활용액</text>
+<text x="1217.02" y="1360" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#1e293b" xml:space="preserve">8,000만 원</text>
+<rect x="389.5" y="1368" width="890" height="10" rx="5" fill="#e2e8f0"/>
+<rect x="389.5" y="1368" width="712" height="10" rx="5" fill="#2563eb"/>
+<rect x="369.5" y="1430" width="930" height="205" rx="16" fill="#ffffff"/>
+<rect x="370" y="1430.5" width="929" height="204" rx="15.5" fill="none" stroke="#e0e7ff" stroke-width="1"/>
+<rect x="394.5" y="1455" width="40.81" height="21" rx="10.5" fill="#e0e7ff"/>
+<text x="402.5" y="1470" font-family="Pretendard, sans-serif" font-size="10" font-weight="800" fill="#4338ca" xml:space="preserve">FACT</text>
+<rect x="443.31" y="1455" width="85.67" height="21" rx="10.5" fill="#ccfbf1"/>
+<text x="451.31" y="1470" font-family="Pretendard, sans-serif" font-size="10" font-weight="800" fill="#0f766e" xml:space="preserve">CALCULATION</text>
+<rect x="536.98" y="1455" width="65.5" height="21" rx="10.5" fill="#ffedd5"/>
+<text x="544.98" y="1470" font-family="Pretendard, sans-serif" font-size="10" font-weight="800" fill="#c2410c" xml:space="preserve">AI ADVICE</text>
+<text x="394.5" y="1510" font-family="Pretendard, sans-serif" font-size="17" font-weight="800" fill="#0f172a" xml:space="preserve">핵심 결론 · 1억 원을 전부 현금으로 모을 필요는 없습니다.</text>
+<text x="394.5" y="1539" font-family="Pretendard, sans-serif" font-size="14" font-weight="400" fill="#334155" xml:space="preserve">정책금융을</text>
+<text x="462.83" y="1539" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#334155" xml:space="preserve">8,000만 원</text>
+<text x="530.13" y="1539" font-family="Pretendard, sans-serif" font-size="14" font-weight="400" fill="#334155" xml:space="preserve">으로 가정하면 필요한 자기자본은</text>
+<text x="726.13" y="1539" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#334155" xml:space="preserve">2,000만 원</text>
+<text x="793.42" y="1539" font-family="Pretendard, sans-serif" font-size="14" font-weight="400" fill="#334155" xml:space="preserve">입니다. 현재 600만 원이 있으므로</text>
+<text x="994.81" y="1539" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#334155" xml:space="preserve">추가 1,400만 원 · 월 약 58만 원</text>
+<text x="1186.97" y="1539" font-family="Pretendard, sans-serif" font-size="14" font-weight="400" fill="#334155" xml:space="preserve">이 핵심 실행목</text>
+<text x="394.5" y="1560" font-family="Pretendard, sans-serif" font-size="14" font-weight="400" fill="#334155" xml:space="preserve">표입니다.</text>
+<rect x="394.5" y="1577" width="572.56" height="33" rx="8" fill="#eff6ff"/>
+<text x="406.5" y="1599" font-family="Pretendard, sans-serif" font-size="12" font-weight="600" fill="#2563eb" xml:space="preserve">💡 아래 3. What-if Simulator에서 월 저축액 변수를 자유롭게 조정해 현실적인 플랜을 시뮬레이션해보세요.</text>
+<rect x="340.5" y="1696" width="988" height="518" rx="16" fill="#ffffff"/>
+<rect x="341" y="1696.5" width="987" height="517" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="369.5" y="1748" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">3. What-if Simulator</text>
+<rect x="1235.08" y="1727.5" width="64.42" height="24" rx="6" fill="#eff6ff"/>
+<text x="1243.08" y="1744.5" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#2563eb" xml:space="preserve">Realtime</text>
+<rect x="369.5" y="1770" width="494.17" height="415" rx="16" fill="#ffffff"/>
+<rect x="370" y="1770.5" width="493.17" height="414" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="394.5" y="1808" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#2563eb" xml:space="preserve">WHAT-IF SIMULATOR</text>
+<text x="394.5" y="1843" font-family="Pretendard, sans-serif" font-size="22" font-weight="800" fill="#0f172a" xml:space="preserve">월 저축액을 바꿔보세요</text>
+<text x="394.5" y="1872" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">목표를 포기하는 대신 어느 변수를 바꾸면 현실성이 높아지는지 계산합니다.</text>
+<text x="394.5" y="1914" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">30만 원</text>
+<text x="793.25" y="1914" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">100만 원</text>
+<rect x="394.5" y="1924" width="444.17" height="16" fill="#ffffff"/>
+<rect x="394.5" y="1929" width="444.17" height="6" rx="3" fill="#e2e8f0"/>
+<rect x="394.5" y="1929" width="177.67" height="6" rx="3" fill="#2563eb"/>
+<circle cx="572.17" cy="1932" r="9" fill="#ffffff" stroke="#2563eb" stroke-width="3"/>
+<rect x="394.5" y="1961" width="444.17" height="109" rx="12" fill="#f8fafc"/>
+<rect x="395" y="1961.5" width="443.17" height="108" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="415.5" y="1996" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">월 저축액</text>
+<text x="415.5" y="2040" font-family="Pretendard, sans-serif" font-size="32" font-weight="800" fill="#0f172a" xml:space="preserve">58만 원</text>
+<rect x="394.5" y="2086" width="444.17" height="74" rx="12" fill="#fef3c7"/>
+<rect x="395" y="2086.5" width="443.17" height="73" rx="11.5" fill="none" stroke="#fde68a" stroke-width="1"/>
+<text x="411.5" y="2118" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#92400e" xml:space="preserve">🟡 현재 저축액이면</text>
+<text x="526.36" y="2118" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#92400e" xml:space="preserve">약 24개월</text>
+<text x="587.23" y="2118" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#92400e" xml:space="preserve">필요</text>
+<text x="411.5" y="2140" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#b45309" xml:space="preserve">기존 목표 기간과 정확히 일치합니다.</text>
+<rect x="887.67" y="1770" width="411.83" height="226.59" rx="16" fill="#ffffff"/>
+<rect x="888.17" y="1770.5" width="410.83" height="225.59" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="908.67" y="1804" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#2563eb" xml:space="preserve">GOAL TRADE-OFF</text>
+<text x="908.67" y="1832" font-family="Pretendard, sans-serif" font-size="18" font-weight="800" fill="#0f172a" xml:space="preserve">Plan A / Plan B</text>
+<rect x="908.67" y="1851" width="178.91" height="124.59" rx="12" fill="#eff6ff"/>
+<rect x="909.67" y="1852" width="176.91" height="122.59" rx="11" fill="none" stroke="#2563eb" stroke-width="2"/>
+<text x="926.67" y="1882" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" fill="#2563eb" xml:space="preserve">Plan A</text>
+<text x="926.67" y="1914" font-family="Pretendard, sans-serif" font-size="15" font-weight="800" fill="#0f172a" xml:space="preserve">기간을 지킨다</text>
+<text x="926.67" y="1937" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">24개월 목표를 유지하고 월</text>
+<text x="926.67" y="1953.8" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">약</text>
+<text x="941.08" y="1953.8" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">58만 원</text>
+<text x="979.84" y="1953.8" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">을 확보합니다.</text>
+<rect x="1100.08" y="1851.5" width="177.92" height="123.59" rx="11.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="1116.58" y="1881" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" fill="#2563eb" xml:space="preserve">Plan B</text>
+<text x="1116.58" y="1913" font-family="Pretendard, sans-serif" font-size="15" font-weight="800" fill="#0f172a" xml:space="preserve">저축 부담을 낮춘다</text>
+<text x="1116.58" y="1936" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">월저축을 낮추면 목표기간이</text>
+<text x="1116.58" y="1952.8" font-family="Pretendard, sans-serif" font-size="12" font-weight="400" fill="#64748b" xml:space="preserve">자동 연장됩니다.</text>
+<rect x="887.67" y="2012.59" width="411.83" height="160.5" rx="16" fill="#ffffff"/>
+<rect x="888.17" y="2013.09" width="410.83" height="159.5" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="908.67" y="2046.59" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#2563eb" xml:space="preserve">DECISION PRINCIPLE</text>
+<text x="908.67" y="2074.59" font-family="Pretendard, sans-serif" font-size="16" font-weight="800" fill="#0f172a" xml:space="preserve">듣고 싶은 답보다 가능한 답을 계산합니다.</text>
+<text x="908.67" y="2102.59" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">월 저축액을 움직이면 "언제 독립 가능한지"를 즉시 다시 계산합니다.</text>
+<text x="908.67" y="2128.09" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#2563eb" xml:space="preserve">↓ 아래 FinTox 세션에서 지출 내역을 기반으로 저축 계획을 방해하</text>
+<text x="908.67" y="2147.59" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#2563eb" xml:space="preserve">는 요소를 정밀 분석해 드립니다.</text>
+<rect x="340.5" y="2246" width="988" height="836.69" rx="16" fill="#ffffff"/>
+<rect x="341" y="2246.5" width="987" height="835.69" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="369.5" y="2298" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">4. FinTox (결제 문자 기반 소비 위험 진단)</text>
+<rect x="1160.89" y="2277.5" width="138.61" height="24" rx="6" fill="#eff6ff"/>
+<text x="1168.89" y="2294.5" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#2563eb" xml:space="preserve">Goal-oriented Analysis</text>
+<rect x="369.5" y="2320" width="930" height="174" rx="16" fill="#ffffff"/>
+<rect x="370" y="2320.5" width="929" height="173" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="390.5" y="2354" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#2563eb" xml:space="preserve">FINTOX · SUPPORTING</text>
+<text x="390.5" y="2381" font-family="Pretendard, sans-serif" font-size="17" font-weight="800" fill="#0f172a" xml:space="preserve">결제 문자를 목표 관점에서 분석</text>
+<text x="390.5" y="2409" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">감정을 단정하지 않고 예산·빈도·시간대·목표저축 대비 비중으로 위험지수를 계산합니다.</text>
+<rect x="390.5" y="2423" width="888" height="50" rx="10" fill="#f8fafc"/>
+<rect x="391" y="2423.5" width="887" height="49" rx="9.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="405.5" y="2454" font-family="Pretendard, sans-serif" font-size="14" font-weight="600" fill="#0f172a" xml:space="preserve">💬 [신한체크승인] 09/01 23:40 배달의민족 34,000원</text>
+<rect x="369.5" y="2510" width="930" height="204.19" rx="16" fill="#faf5ff"/>
+<rect x="370" y="2510.5" width="929" height="203.19" rx="15.5" fill="none" stroke="#e9d5ff" stroke-width="1"/>
+<text x="390.5" y="2544" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#7c3aed" xml:space="preserve">RISK INDEX</text>
+<rect x="393.5" y="2562" width="74" height="74" rx="37" fill="none" stroke="#8b5cf6" stroke-width="6"/>
+<text x="418.31" y="2599.5" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#6d28d9" xml:space="preserve">72</text>
+<text x="418.31" y="2618.5" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" fill="#64748b" xml:space="preserve">/100</text>
+<rect x="494.5" y="2570" width="63.56" height="24" rx="12" fill="#f1f5f9"/>
+<text x="504.5" y="2587" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#64748b" xml:space="preserve">야간 결제</text>
+<rect x="564.06" y="2570" width="64.78" height="24" rx="12" fill="#f1f5f9"/>
+<text x="574.06" y="2587" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#64748b" xml:space="preserve">배달/외식</text>
+<rect x="634.84" y="2570" width="127.25" height="24" rx="12" fill="#fef3c7"/>
+<text x="644.84" y="2587" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#b45309" xml:space="preserve">월 저축목표 대비 5.9%</text>
+<text x="494.5" y="2623" font-family="Pretendard, sans-serif" font-size="18" font-weight="800" fill="#5b21b6" xml:space="preserve">소비위험지수: 관찰 필요</text>
+<rect x="390.5" y="2651" width="888" height="42.19" rx="6" fill="#fffbe3"/>
+<rect x="390.5" y="2651" width="4" height="42.19" fill="#f59e0b"/>
+<text x="406.5" y="2677" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#b45309" xml:space="preserve">이번</text>
+<text x="434.06" y="2677" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#b45309" xml:space="preserve">34,000원 지출</text>
+<text x="516.17" y="2677" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#b45309" xml:space="preserve">은 월 독립저축 목표 583,000원의</text>
+<text x="700.89" y="2677" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#b45309" xml:space="preserve">약 5.8%</text>
+<text x="748.59" y="2677" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#b45309" xml:space="preserve">입니다. 감정을 추정하지 않고 목표 저축과의 상대적 영향을 보여줍니다.</text>
+<rect x="369.5" y="2730.19" width="930" height="134" rx="16" fill="#ffffff"/>
+<rect x="370" y="2730.69" width="929" height="133" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="390.5" y="2764.19" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#2563eb" xml:space="preserve">SMART PRESCRIPTION</text>
+<text x="390.5" y="2791.19" font-family="Pretendard, sans-serif" font-size="17" font-weight="800" fill="#0f172a" xml:space="preserve">소비를 막기보다 실질지출을 낮춥니다.</text>
+<text x="390.5" y="2819.19" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">주소지 정책 DB를 조회해 K-패스, 지역화폐, 생활비 지원 등 실제 이용 가능한 혜택을 함께 제안합니다.</text>
+<text x="390.5" y="2838.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">목표는 "배달 금지"가 아니라 실질지출을 낮추면서</text>
+<text x="663.89" y="2838.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#64748b" xml:space="preserve">월 58.3만 원 저축을 지키는 것</text>
+<text x="828.95" y="2838.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">입니다.</text>
+<rect x="369.5" y="2880.19" width="930" height="173.5" rx="16" fill="#eff6ff"/>
+<rect x="370" y="2880.69" width="929" height="172.5" rx="15.5" fill="none" stroke="#bfdbfe" stroke-width="1"/>
+<text x="390.5" y="2914.19" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#2563eb" xml:space="preserve">WHY IT MATTERS</text>
+<text x="390.5" y="2941.19" font-family="Pretendard, sans-serif" font-size="17" font-weight="800" fill="#0f172a" xml:space="preserve">가계부와 다른 점</text>
+<text x="390.5" y="2969.19" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e3a8a" xml:space="preserve">일반 가계부가 "어디에 얼마를 썼는지" 보여준다면, 청사진은 그 소비가</text>
+<text x="774.13" y="2969.19" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1e3a8a" xml:space="preserve">목표 달성 시점과 원저축 계획에 어떤 영향을 주는 지 연결</text>
+<text x="1081.97" y="2969.19" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#1e3a8a" xml:space="preserve">합니다.</text>
+<rect x="390.5" y="2987.69" width="888" height="45" rx="10" fill="#ffffff"/>
+<rect x="391" y="2988.19" width="887" height="44" rx="9.5" fill="none" stroke="#93c5fd" stroke-width="1"/>
+<text x="407.5" y="3015.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#2563eb" xml:space="preserve">↓ 최종 점검: 아래 5. Policy Action Center에서 준비도 및 실행 로드맵을 확인하세요</text>
+<rect x="340.5" y="3114.69" width="988" height="1249.05" rx="16" fill="#ffffff"/>
+<rect x="341" y="3115.19" width="987" height="1248.05" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="369.5" y="3166.69" font-family="Pretendard, sans-serif" font-size="20" font-weight="800" fill="#0f172a" xml:space="preserve">5. Policy Action Center</text>
+<rect x="1121.36" y="3146.19" width="178.14" height="24" rx="6" fill="#eff6ff"/>
+<text x="1129.36" y="3163.19" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#2563eb" xml:space="preserve">Financial Readiness Roadmap</text>
+<text x="369.5" y="3203.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">독립 시점까지 필요한 금융 준비 및 체크리스트를 하나의 연동 로드맵으로 관리합니다.</text>
+<rect x="369.5" y="3227.69" width="930" height="530.8" rx="16" fill="#ffffff"/>
+<rect x="370" y="3228.19" width="929" height="529.8" rx="15.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="394.5" y="3265.69" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#2563eb" xml:space="preserve">FINANCIAL READINESS</text>
+<text x="394.5" y="3306.69" font-family="Pretendard, sans-serif" font-size="22" font-weight="800" fill="#0f172a" xml:space="preserve">실행 준비도</text>
+<text x="1212.78" y="3304.69" font-family="Pretendard, sans-serif" font-size="28" font-weight="800" fill="#2563eb" xml:space="preserve">33%</text>
+<rect x="394.5" y="3324.69" width="880" height="12" rx="6" fill="#e2e8f0"/>
+<rect x="394.5" y="3324.69" width="290.39" height="12" rx="6" fill="#2563eb"/>
+<rect x="394.5" y="3356.69" width="880" height="45" rx="10" fill="#eff6ff"/>
+<rect x="395" y="3357.19" width="879" height="44" rx="9.5" fill="none" stroke="#93c5fd" stroke-width="1"/>
+<rect x="409.5" y="3370.19" width="18" height="18" rx="4" fill="#2563eb"/>
+<path d="M413.82 3379.55L417.24 3382.97L423.18 3375.59" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="437.5" y="3384.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#2563eb" xml:space="preserve">목표 설정 완료</text>
+<rect x="394.5" y="3411.69" width="880" height="45" rx="10" fill="#eff6ff"/>
+<rect x="395" y="3412.19" width="879" height="44" rx="9.5" fill="none" stroke="#93c5fd" stroke-width="1"/>
+<rect x="409.5" y="3425.19" width="18" height="18" rx="4" fill="#2563eb"/>
+<path d="M413.82 3434.55L417.24 3437.97L423.18 3430.59" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="437.5" y="3439.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#2563eb" xml:space="preserve">금융현황 입력</text>
+<rect x="394.5" y="3466.69" width="880" height="45" rx="10" fill="#ffffff"/>
+<rect x="395" y="3467.19" width="879" height="44" rx="9.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="409.5" y="3480.19" width="18" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="437.5" y="3494.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#0f172a" xml:space="preserve">청년 버팀목 자격 재확인</text>
+<rect x="394.5" y="3521.69" width="880" height="45" rx="10" fill="#ffffff"/>
+<rect x="395" y="3522.19" width="879" height="44" rx="9.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="409.5" y="3535.19" width="18" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="437.5" y="3549.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#0f172a" xml:space="preserve">전세보증 안전성 체크</text>
+<rect x="394.5" y="3576.69" width="880" height="45" rx="10" fill="#ffffff"/>
+<rect x="395" y="3577.19" width="879" height="44" rx="9.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="409.5" y="3590.19" width="18" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="437.5" y="3604.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#0f172a" xml:space="preserve">정책 신청일 알림 설정</text>
+<rect x="394.5" y="3631.69" width="880" height="45" rx="10" fill="#ffffff"/>
+<rect x="395" y="3632.19" width="879" height="44" rx="9.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="409.5" y="3645.19" width="18" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="437.5" y="3659.69" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#0f172a" xml:space="preserve">필요서류 체크</text>
+<rect x="394.5" y="3692.69" width="880" height="40.8" rx="10" fill="#eff6ff"/>
+<text x="410.5" y="3717.69" font-family="Pretendard, sans-serif" font-size="12" font-weight="600" fill="#2563eb" xml:space="preserve">📌</text>
+<text x="430.34" y="3717.69" font-family="Pretendard, sans-serif" font-size="12" font-weight="900" fill="#2563eb" xml:space="preserve">중요:</text>
+<text x="460.03" y="3717.69" font-family="Pretendard, sans-serif" font-size="12" font-weight="600" fill="#2563eb" xml:space="preserve">준비도는 대출 승인확률이 아닙니다. 목표 실행에 필요한 정보·서류·행동의 완료율입니다.</text>
+<rect x="397.5" y="3812.48" width="2" height="336.75" fill="#e2e8f0"/>
+<rect x="369.5" y="3782.48" width="58" height="58" rx="29" fill="#dcfce7"/>
+<rect x="370.5" y="3783.48" width="56" height="56" rx="28" fill="none" stroke="#10b981" stroke-width="2"/>
+<text x="379.38" y="3816.98" font-family="Pretendard, sans-serif" font-size="13" font-weight="800" fill="#15803d" xml:space="preserve">D-730</text>
+<rect x="447.5" y="3782.48" width="852" height="86.19" rx="14" fill="#ffffff"/>
+<rect x="448" y="3782.98" width="851" height="85.19" rx="13.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="468.5" y="3819.98" font-family="Pretendard, sans-serif" font-size="15" font-weight="800" fill="#0f172a" xml:space="preserve">목표 설정 및 저축 플랜 확정</text>
+<rect x="1178.97" y="3801.48" width="99.53" height="24" rx="4" fill="#dcfce7"/>
+<text x="1186.97" y="3818.48" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#15803d" xml:space="preserve">✅ 완료 (+20XP)</text>
+<text x="468.5" y="3845.48" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">버팀목 대출(8,000만 원) 기반 필요 자금 1,400만 원 저축 목표 세팅 완료.</text>
+<rect x="369.5" y="3892.67" width="58" height="58" rx="29" fill="#eff6ff"/>
+<rect x="370.5" y="3893.67" width="56" height="56" rx="28" fill="none" stroke="#2563eb" stroke-width="2"/>
+<text x="379.38" y="3927.17" font-family="Pretendard, sans-serif" font-size="13" font-weight="800" fill="#2563eb" xml:space="preserve">D-600</text>
+<rect x="447.5" y="3892.67" width="852" height="86.19" rx="14" fill="#ffffff"/>
+<rect x="448" y="3893.17" width="851" height="85.19" rx="13.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="468.5" y="3930.17" font-family="Pretendard, sans-serif" font-size="15" font-weight="800" fill="#0f172a" xml:space="preserve">FinTox 결제 연동 &amp; 월저축 자동화</text>
+<rect x="1210.88" y="3911.67" width="67.63" height="24" rx="4" fill="#fef3c7"/>
+<text x="1218.88" y="3928.67" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#b45309" xml:space="preserve">🔵 진행 중</text>
+<text x="468.5" y="3955.67" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">월 58만 원 저축 달성을 위해 야간 배달 등 비정기 지출 누수를 상시점검 및 방지.</text>
+<rect x="369.5" y="4002.86" width="58" height="58" rx="29" fill="#ffffff"/>
+<rect x="370.5" y="4003.86" width="56" height="56" rx="28" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+<text x="379.38" y="4037.36" font-family="Pretendard, sans-serif" font-size="13" font-weight="800" fill="#64748b" xml:space="preserve">D-300</text>
+<rect x="447.5" y="4002.86" width="852" height="86.19" rx="14" fill="#ffffff"/>
+<rect x="448" y="4003.36" width="851" height="85.19" rx="13.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+<text x="468.5" y="4040.36" font-family="Pretendard, sans-serif" font-size="15" font-weight="800" fill="#0f172a" xml:space="preserve">버팀목 대출 사전 자격 재검증</text>
+<rect x="1224.06" y="4021.86" width="54.44" height="24" rx="4" fill="#f1f5f9"/>
+<text x="1232.06" y="4038.86" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#475569" xml:space="preserve">⏳ 예정</text>
+<text x="468.5" y="4065.86" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">무주택 세대주 요건 및 소득·자산 변동 내역 재점검 (서류 서류 자동 가공).</text>
+<rect x="369.5" y="4113.05" width="58" height="58" rx="29" fill="#ffffff"/>
+<rect x="370.5" y="4114.05" width="56" height="56" rx="28" fill="none" stroke="#0f172a" stroke-width="2"/>
+<text x="378.59" y="4147.55" font-family="Pretendard, sans-serif" font-size="13" font-weight="800" fill="#0f172a" xml:space="preserve">D-DAY</text>
+<rect x="447.5" y="4113.05" width="852" height="86.19" rx="14" fill="#ffffff"/>
+<rect x="448" y="4113.55" width="851" height="85.19" rx="13.5" fill="none" stroke="#0f172a" stroke-width="1"/>
+<text x="468.5" y="4150.55" font-family="Pretendard, sans-serif" font-size="15" font-weight="800" fill="#0f172a" xml:space="preserve">전세대출 실행 및 독립 완료</text>
+<rect x="1200.75" y="4132.05" width="77.75" height="24" rx="4" fill="#f1f5f9"/>
+<text x="1208.75" y="4149.05" font-family="Pretendard, sans-serif" font-size="11" font-weight="700" fill="#0f172a" xml:space="preserve">🎯 최종 목표</text>
+<text x="468.5" y="4176.05" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#64748b" xml:space="preserve">마포구 전세보증금 잔금 치르고 독립 완료.</text>
+<rect x="369.5" y="4211.23" width="930" height="123.5" rx="16" fill="#0f172a"/>
+<text x="784.66" y="4248.23" font-family="Pretendard, sans-serif" font-size="11" font-weight="800" letter-spacing="0.5" fill="#93c5fd" xml:space="preserve">READY TO START</text>
+<text x="683.66" y="4278.23" font-family="Pretendard, sans-serif" font-size="18" font-weight="800" fill="#ffffff" xml:space="preserve">마포구 전세 독립 플랜이 준비되었습니다</text>
+<text x="578.02" y="4306.23" font-family="Pretendard, sans-serif" font-size="13" font-weight="400" fill="#94a3b8" xml:space="preserve">선택하신 정책 대출과 월 저축 플랜이 결합하여 목표 달성 가능성이 **98%**로 계산되었습니다.</text>
+</svg>
