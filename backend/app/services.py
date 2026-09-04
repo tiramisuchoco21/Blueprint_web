@@ -32,7 +32,11 @@ def load_personas() -> dict[str, UserProfile]:
 
 @lru_cache(maxsize=1)
 def load_transactions() -> tuple[Transaction, ...]:
+    # 로컬에 실제 명세로 만든 파일이 있으면 그것을, 없으면 저장소에 포함된
+    # 합성본을 쓴다. tx_dummy.json 은 .gitignore 대상이다.
     path = FIXTURE_DIR / "tx_dummy.json"
+    if not path.exists():
+        path = FIXTURE_DIR / "tx_demo.json"
     if not path.exists():
         return ()
     rows = json.loads(path.read_text(encoding="utf-8"))

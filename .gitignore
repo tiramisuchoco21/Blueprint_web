@@ -5,6 +5,7 @@
 fixtures/raw_card.txt
 dummy_tx.txt
 *_tx.txt
+fixtures/tx_dummy.json
 fixtures/카드*.txt
 fixtures/_*.txt
 

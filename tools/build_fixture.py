@@ -143,13 +143,24 @@ def mark_recurring(rows: list[dict]) -> None:
 
 
 if __name__ == "__main__":
-    src = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "fixtures" / "demo_card.txt"
+    if len(sys.argv) > 1:
+        src = Path(sys.argv[1])
+    else:
+        # 로컬에 실제 명세가 있으면 그것을 쓰고, 없으면(저장소 클론 등) 합성본으로
+        # 자동 폴백한다. raw_card.txt 는 .gitignore 로 저장소에 올라가지 않는다.
+        real = ROOT / "fixtures" / "raw_card.txt"
+        src = real if real.exists() else ROOT / "fixtures" / "demo_card.txt"
     if not src.is_absolute():
         src = ROOT / src
     print("source:", src.name)
     rows = parse(src)
     mark_recurring(rows)
-    out = ROOT / "fixtures" / "tx_dummy.json"
+    # 출력 파일을 소스에 따라 나눈다.
+    #   실제 명세 → tx_dummy.json  (.gitignore, 로컬 전용)
+    #   합성본    → tx_demo.json   (저장소에 포함)
+    out = ROOT / "fixtures" / (
+        "tx_demo.json" if src.name == "demo_card.txt" else "tx_dummy.json"
+    )
     out.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
 
     unknown = [r for r in rows if r["category"] == "unknown"]
