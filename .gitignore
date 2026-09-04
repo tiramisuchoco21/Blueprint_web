@@ -3,6 +3,8 @@
 # 생활 반경이 포함돼 있어 공개 저장소에 올리면 안 된다.
 # 저장소에 포함된 것은 fixtures/demo_card.txt (합성 데이터)뿐이다.
 fixtures/raw_card.txt
+dummy_tx.txt
+*_tx.txt
 fixtures/카드*.txt
 fixtures/_*.txt
 
