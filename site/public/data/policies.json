@@ -1,0 +1,1343 @@
+{
+  "meta": {
+    "version": "0.1.0",
+    "based_on": "2026-09-03",
+    "code_system": "온통청년 OPEN API 코드체계 (API코드정보.xlsx)",
+    "review_notice": "verified=true 항목은 2026-09-03 기준 공식/공신력 있는 출처로 대조했습니다. verified=false 항목은 화면에 '검증 전' 배지가 표시되며 신청 전 원문 확인이 필요합니다. 금리·한도는 공시 시점에 따라 수시 변동합니다.",
+    "why_local_db": "온통청년 API는 연령·소득·지역 요건은 제공하지만 대출한도(max_amount)·보증금 대비 비율(ratio_of_target)·금리 같은 금융 파라미터를 제공하지 않는다. 목표 자금 계산에 필요한 값이므로 핵심 정책만 정형 DB로 직접 관리한다.",
+    "verified_at": "2026-09-03",
+    "classification_note": "lclsf/mclsf 는 온통청년 API 가 실제로 내려주는 표기를 따른다. 코드정의서(API코드정보.xlsx)의 '교육/복지문화/참여권리'와 실제 응답의 '교육･직업훈련/금융･복지･문화/참여･기반'이 다르므로 실제 응답 기준으로 맞췄다. (2026-09-03 확인)"
+  },
+  "exclusive_groups": {
+    "jeonse_loan": {
+      "label": "전세자금대출",
+      "rule": "one",
+      "reason": "동일 목적의 주택 전세자금대출은 한 건만 실행할 수 있습니다."
+    },
+    "purchase_loan": {
+      "label": "주택구입자금대출",
+      "rule": "one",
+      "reason": "주택구입자금 정책대출은 한 건만 실행할 수 있습니다."
+    },
+    "youth_asset": {
+      "label": "청년 자산형성 지원",
+      "rule": "review",
+      "reason": "청년도약계좌·청년내일저축계좌 등은 동시 가입 제한이 있을 수 있어 소관기관 확인이 필요합니다."
+    }
+  },
+  "categories": {
+    "housing_loan": {
+      "label": "주거 · 전세자금",
+      "funding_role": "policy_loan"
+    },
+    "purchase_loan": {
+      "label": "주거 · 주택구입",
+      "funding_role": "policy_loan"
+    },
+    "housing_grant": {
+      "label": "주거 · 현금지원",
+      "funding_role": "policy_benefit"
+    },
+    "asset_building": {
+      "label": "자산형성 · 저축",
+      "funding_role": "future_fund"
+    },
+    "tax_benefit": {
+      "label": "세제 혜택",
+      "funding_role": "future_fund"
+    },
+    "living_discount": {
+      "label": "생활비 절감",
+      "funding_role": "cost_saving"
+    }
+  },
+  "policies": [
+    {
+      "policy_id": "youth_butimok",
+      "name": "청년전용 버팀목전세자금대출",
+      "short_name": "청년 버팀목",
+      "provider": "주택도시기금",
+      "category": "housing_loan",
+      "is_policy": true,
+      "lclsf": "주거",
+      "mclsf": "전월세 및 주거급여 지원",
+      "keywords": [
+        "대출",
+        "금리혜택",
+        "주거지원"
+      ],
+      "exclusive_group": "jeonse_loan",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": 50000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "asset_limit",
+            "label": "순자산 3.45억 원 이하 (기준은 매년 갱신)",
+            "auto": true,
+            "max_net_asset": 345000000
+          },
+          {
+            "key": "deposit_limit",
+            "label": "임차보증금 3억 원 이하 주택",
+            "auto": true,
+            "max_target": 300000000
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "loan",
+        "max_amount": 200000000,
+        "ratio_of_target": 0.8,
+        "rate_min": 0.018,
+        "rate_max": 0.027,
+        "term_years": 2,
+        "benefit_note": "임차보증금의 80% 이내, 상품상 최대한도까지",
+        "repay_type": "interest_only"
+      },
+      "source": {
+        "name": "주택도시기금",
+        "url": "https://nhuf.molit.go.kr",
+        "based_on": "2026-09-03",
+        "verified": true,
+        "note": "한도 2억·보증금 80%·대상주택 보증금 3억 이하·연령 만19~34·기간 2년 확인. 순자산 기준은 연도별 갱신되므로 신청 시점 재확인 필요."
+      },
+      "documents": [
+        "확정일자부 임대차계약서 사본",
+        "임차보증금의 5% 이상 납입 영수증",
+        "주민등록등본 (최근 5년 주소 변동 포함)",
+        "가족관계증명서",
+        "소득 증빙 (원천징수영수증 또는 소득금액증명원)",
+        "재직 증빙 (재직증명서 또는 건강보험 자격득실 확인서)",
+        "무주택 확인서 (은행 양식)"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "seoul_youth_deposit",
+      "name": "서울시 청년 임차보증금 이자지원",
+      "short_name": "서울 임차보증금",
+      "provider": "서울특별시",
+      "category": "housing_loan",
+      "is_policy": true,
+      "lclsf": "주거",
+      "mclsf": "전월세 및 주거급여 지원",
+      "keywords": [
+        "대출",
+        "금리혜택",
+        "주거지원"
+      ],
+      "exclusive_group": "jeonse_loan",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 39
+        },
+        "income_max": 50000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [
+          "11"
+        ],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "seoul_resident",
+            "label": "서울시 거주 또는 서울 소재 주택 임차",
+            "auto": true
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "loan",
+        "max_amount": 200000000,
+        "ratio_of_target": 0.9,
+        "rate_min": 0.01,
+        "rate_max": 0.03,
+        "term_years": 2,
+        "benefit_note": "임차보증금 90% 이내·최대 2억 원, 최대 3.0%p 이자지원 (본인부담 최소 연 1.0%)",
+        "repay_type": "interest_only"
+      },
+      "source": {
+        "name": "서울주거포털",
+        "url": "https://housing.seoul.go.kr/site/main/content/sh01_040901",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "임대차계약서 사본",
+        "주민등록등본",
+        "소득 증빙 (원천징수영수증 등)",
+        "재직 증빙",
+        "서울시 거주 확인 서류"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "sme_youth_jeonse",
+      "name": "중소기업 취업청년 전월세보증금대출",
+      "short_name": "중기청 대출",
+      "provider": "주택도시기금",
+      "category": "housing_loan",
+      "is_policy": true,
+      "lclsf": "주거",
+      "mclsf": "전월세 및 주거급여 지원",
+      "keywords": [
+        "대출",
+        "중소기업",
+        "주거지원"
+      ],
+      "exclusive_group": "jeonse_loan",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": 50000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013001"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014001"
+        ],
+        "regions": [],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "new_application",
+            "auto": false,
+            "label": "신규 접수 가능 여부를 기금 포털·수탁은행에서 확인해야 합니다 (기존 이용자는 연장 가능)"
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057001",
+        "label": "신규 접수 여부 확인 필요",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "loan",
+        "max_amount": 100000000,
+        "ratio_of_target": 0.8,
+        "rate_min": 0.012,
+        "rate_max": 0.012,
+        "term_years": 2,
+        "benefit_note": "기존 이용자 연장 가능. 신규 접수는 확인 필요",
+        "repay_type": "interest_only"
+      },
+      "source": {
+        "name": "주택도시기금",
+        "url": "https://nhuf.molit.go.kr",
+        "based_on": "2026-09-03",
+        "verified": false,
+        "note": "당초 '2024-12-31 일몰 종료'로 기재했으나 근거를 확인하지 못해 철회. 2026년 연장 안내는 확인됨."
+      },
+      "documents": [
+        "확정일자부 임대차계약서 사본",
+        "임차보증금의 5% 이상 납입 영수증",
+        "주민등록등본 (최근 5년 주소 변동 포함)",
+        "가족관계증명서",
+        "소득 증빙 (원천징수영수증 또는 소득금액증명원)",
+        "재직 증빙 (재직증명서 또는 건강보험 자격득실 확인서)",
+        "무주택 확인서 (은행 양식)",
+        "중소기업 재직 확인 서류 (사업자등록증명 · 재직증명서)"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "kakaobank_jeonse",
+      "name": "카카오뱅크 청년 전월세보증금 대출",
+      "short_name": "카뱅 전월세",
+      "provider": "카카오뱅크",
+      "category": "housing_loan",
+      "is_policy": false,
+      "lclsf": "주거",
+      "mclsf": "전월세 및 주거급여 지원",
+      "keywords": [
+        "대출"
+      ],
+      "exclusive_group": "jeonse_loan",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": null,
+        "income_cond_code": "0043001",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "private_product",
+            "label": "정책상품이 아닌 민간 금융상품 (비교용)",
+            "auto": true
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "loan",
+        "max_amount": 222000000,
+        "ratio_of_target": 0.8,
+        "rate_min": 0.031,
+        "rate_max": 0.045,
+        "term_years": 2,
+        "benefit_note": "비대면 신청 가능, 금리는 신용도에 따라 변동",
+        "repay_type": "interest_only"
+      },
+      "source": {
+        "name": "카카오뱅크",
+        "url": "https://www.kakaobank.com",
+        "based_on": "2026-09-01",
+        "verified": false,
+        "note": "민간 상품이라 금리·한도가 수시 변동. 비교용으로만 사용"
+      },
+      "documents": [
+        "임대차계약서 사본",
+        "계약금 납입 영수증",
+        "주민등록등본",
+        "소득 증빙"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "didimdol_newlywed",
+      "name": "신혼부부 전용 구입자금대출(디딤돌)",
+      "short_name": "신혼 디딤돌",
+      "provider": "주택도시기금",
+      "category": "purchase_loan",
+      "is_policy": true,
+      "lclsf": "주거",
+      "mclsf": "주택 및 거주지",
+      "keywords": [
+        "대출",
+        "금리혜택",
+        "주거지원"
+      ],
+      "exclusive_group": "purchase_loan",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": null
+        },
+        "income_max": 85000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055001"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "marriage_7y",
+            "label": "혼인신고일 7년 이내 또는 3개월 내 결혼예정",
+            "auto": false
+          },
+          {
+            "key": "house_price",
+            "label": "주택가격 6억 원 이하",
+            "auto": true,
+            "max_target": 600000000
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "loan",
+        "max_amount": 320000000,
+        "ratio_of_target": 0.8,
+        "rate_min": 0.023,
+        "rate_max": 0.037,
+        "term_years": 30,
+        "benefit_note": "주택가격 6억 이하 · 신혼부부 한도 3.2억",
+        "repay_type": "amortizing"
+      },
+      "source": {
+        "name": "주택도시기금",
+        "url": "https://nhuf.molit.go.kr",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "매매계약서 사본",
+        "주민등록등본 (최근 5년 주소 변동 포함)",
+        "가족관계증명서",
+        "소득 증빙 (원천징수영수증 또는 소득금액증명원)",
+        "재직 증빙 (재직증명서 또는 건강보험 자격득실 확인서)",
+        "등기부등본",
+        "혼인관계증명서 (또는 예식장 계약서 등 결혼예정 증빙)"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "newborn_special",
+      "name": "신생아 특례 구입자금대출",
+      "short_name": "신생아 특례",
+      "provider": "주택도시기금",
+      "category": "purchase_loan",
+      "is_policy": true,
+      "lclsf": "주거",
+      "mclsf": "주택 및 거주지",
+      "keywords": [
+        "대출",
+        "금리혜택",
+        "출산"
+      ],
+      "exclusive_group": "purchase_loan",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": null
+        },
+        "income_max": 200000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "newborn",
+            "label": "대출 신청일 기준 2년 이내 출산·입양 가구",
+            "auto": false
+          },
+          {
+            "key": "single_income",
+            "label": "부부 중 1인 소득이 1.3억 원을 넘지 않아야 함",
+            "auto": false
+          },
+          {
+            "key": "house_price_9",
+            "label": "주택가격 9억 원 이하",
+            "auto": true,
+            "max_target": 900000000
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "loan",
+        "max_amount": 400000000,
+        "ratio_of_target": 0.8,
+        "rate_min": 0.016,
+        "rate_max": 0.033,
+        "term_years": 30,
+        "benefit_note": "주택가격 9억 이하 · 한도 4억 (2025.6.27 이후 계약분)",
+        "repay_type": "amortizing"
+      },
+      "source": {
+        "name": "주택도시기금",
+        "url": "https://www.myhome.go.kr/hws/portal/cont/selectBabySpecialCaseStepStoneLoneView.do",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "매매계약서 사본",
+        "주민등록등본 (최근 5년 주소 변동 포함)",
+        "가족관계증명서",
+        "소득 증빙 (원천징수영수증 또는 소득금액증명원)",
+        "재직 증빙 (재직증명서 또는 건강보험 자격득실 확인서)",
+        "등기부등본",
+        "출생증명서 또는 입양관계증명서"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "bogeumjari",
+      "name": "보금자리론",
+      "short_name": "보금자리론",
+      "provider": "한국주택금융공사",
+      "category": "purchase_loan",
+      "is_policy": true,
+      "lclsf": "주거",
+      "mclsf": "주택 및 거주지",
+      "keywords": [
+        "대출",
+        "금리혜택"
+      ],
+      "exclusive_group": "purchase_loan",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": null
+        },
+        "income_max": 70000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "house_price_6",
+            "label": "주택가격 6억 원 이하",
+            "auto": true,
+            "max_target": 600000000
+          },
+          {
+            "key": "income_tier",
+            "label": "소득 상한: 일반 7,000만 / 신혼 8,500만 / 자녀 수에 따라 최대 1억",
+            "auto": true
+          }
+        ],
+        "income_max_by": {
+          "0055001": 85000000
+        }
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "loan",
+        "max_amount": 360000000,
+        "ratio_of_target": 0.7,
+        "rate_min": 0.036,
+        "rate_max": 0.05,
+        "term_years": 40,
+        "benefit_note": "고정금리 · LTV 70% · DTI 60% · 한도 3.6억",
+        "repay_type": "amortizing"
+      },
+      "source": {
+        "name": "한국주택금융공사",
+        "url": "https://www.hf.go.kr/ko/sub01/sub01_01_04.do",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "매매계약서 사본",
+        "주민등록등본 (최근 5년 주소 변동 포함)",
+        "가족관계증명서",
+        "소득 증빙 (원천징수영수증 또는 소득금액증명원)",
+        "재직 증빙 (재직증명서 또는 건강보험 자격득실 확인서)",
+        "등기부등본"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "youth_leap_account",
+      "name": "청년도약계좌",
+      "short_name": "청년도약계좌",
+      "provider": "서민금융진흥원",
+      "category": "asset_building",
+      "is_policy": true,
+      "lclsf": "금융･복지･문화",
+      "mclsf": "취약계층 및 금융지원",
+      "keywords": [
+        "보조금",
+        "금리혜택"
+      ],
+      "exclusive_group": "youth_asset",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": 75000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "household_income",
+            "label": "가구소득 중위 250% 이하",
+            "auto": false
+          },
+          {
+            "key": "maturity_5y",
+            "label": "만기 5년 상품 — 목표 시점이 5년 미만이면 시점 불일치",
+            "auto": true,
+            "min_months": 60
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057003",
+        "label": "마감",
+        "start": null,
+        "end": "2025-12-31"
+      },
+      "finance": {
+        "type": "savings",
+        "monthly_limit": 700000,
+        "gov_match_rate": 0.06,
+        "term_years": 5,
+        "benefit_note": "신규 가입 종료 (2025.12). 기존 가입자는 만기까지 정부기여금·비과세 유지. 후속 상품은 청년미래적금"
+      },
+      "source": {
+        "name": "서민금융진흥원",
+        "url": "https://ylaccount.kinfa.or.kr",
+        "based_on": "2026-09-03",
+        "verified": true
+      }
+    },
+    {
+      "policy_id": "youth_future_savings",
+      "name": "청년미래적금",
+      "short_name": "청년미래적금",
+      "provider": "금융위원회 · 서민금융진흥원",
+      "category": "asset_building",
+      "is_policy": true,
+      "lclsf": "금융･복지･문화",
+      "mclsf": "취약계층 및 금융지원",
+      "keywords": [
+        "보조금",
+        "금리혜택"
+      ],
+      "exclusive_group": "youth_asset",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": 75000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "household_income",
+            "label": "가구 기준 중위소득 200% 이하 (맞벌이 2인 250%)",
+            "auto": false
+          },
+          {
+            "key": "military",
+            "label": "병역이행 기간(최대 6년)은 연령 계산에서 차감",
+            "auto": true
+          },
+          {
+            "key": "maturity_3y",
+            "label": "만기 3년",
+            "auto": true,
+            "min_months": 36
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시 (2026.6 출시)",
+        "start": "2026-06-01",
+        "end": null
+      },
+      "finance": {
+        "type": "savings",
+        "monthly_limit": 500000,
+        "gov_match_rate": 0.06,
+        "term_years": 3,
+        "benefit_note": "월 최대 50만 원 납입, 정부기여금 일반형 6% · 우대형 12%, 이자소득 비과세"
+      },
+      "source": {
+        "name": "금융위원회",
+        "url": "https://www.fsc.go.kr",
+        "based_on": "2026-09-03",
+        "verified": true,
+        "note": "청년도약계좌 후속 상품. 우대형 해당 여부는 소득 구간에 따라 결정됨(기여금 6%로 보수적 계산)."
+      },
+      "documents": [
+        "신분증",
+        "소득 증빙 (원천징수영수증 또는 소득금액증명원)",
+        "가구원 소득 조회 동의서"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "youth_tomorrow_saving",
+      "name": "청년내일저축계좌",
+      "short_name": "내일저축계좌",
+      "provider": "보건복지부",
+      "category": "asset_building",
+      "is_policy": true,
+      "lclsf": "금융･복지･문화",
+      "mclsf": "취약계층 및 금융지원",
+      "keywords": [
+        "보조금"
+      ],
+      "exclusive_group": "youth_asset",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": 36000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013001",
+          "0013002",
+          "0013004"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "household_median",
+            "label": "가구소득 중위 100% 이하",
+            "auto": false
+          },
+          {
+            "key": "maturity_3y",
+            "label": "만기 3년",
+            "auto": true,
+            "min_months": 36
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057001",
+        "label": "특정기간(연 1회 모집)",
+        "start": "2027-05-01",
+        "end": "2027-05-21"
+      },
+      "finance": {
+        "type": "savings",
+        "monthly_limit": 100000,
+        "gov_match_rate": 1.0,
+        "term_years": 3,
+        "benefit_note": "본인 납입액에 대한 정부 매칭 지원"
+      },
+      "source": {
+        "name": "복지로",
+        "url": "https://www.bokjiro.go.kr",
+        "based_on": "2026-09-01",
+        "verified": false,
+        "note": "2026년 모집 공고 원문 미확인"
+      },
+      "documents": [
+        "신분증",
+        "소득 증빙",
+        "가구원 소득·재산 조회 동의서"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "youth_naeil_chaeum",
+      "name": "청년내일채움공제",
+      "short_name": "내일채움공제",
+      "provider": "고용노동부",
+      "category": "asset_building",
+      "is_policy": true,
+      "lclsf": "일자리",
+      "mclsf": "재직자",
+      "keywords": [
+        "보조금",
+        "중소기업"
+      ],
+      "exclusive_group": null,
+      "eligibility": {
+        "age": {
+          "min": 15,
+          "max": 34
+        },
+        "income_max": 44000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013001"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014001"
+        ],
+        "regions": [],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "employer_check",
+            "label": "재직 기업이 참여 요건(업종·규모)을 충족해야 함",
+            "auto": false
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057003",
+        "label": "마감",
+        "start": null,
+        "end": "2024-12-31"
+      },
+      "finance": {
+        "type": "savings",
+        "monthly_limit": 200000,
+        "gov_match_rate": 1.0,
+        "term_years": 2,
+        "benefit_note": "신규 가입 중단. 기존 가입자는 만기까지 유지. 기업형 내일채움공제는 별도 운영"
+      },
+      "source": {
+        "name": "고용24",
+        "url": "https://www.work24.go.kr",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "신분증",
+        "재직증명서",
+        "기업 참여 신청서"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "isa_account",
+      "name": "개인종합자산관리계좌(ISA)",
+      "short_name": "ISA",
+      "provider": "금융위원회",
+      "category": "tax_benefit",
+      "is_policy": true,
+      "lclsf": "금융･복지･문화",
+      "mclsf": "취약계층 및 금융지원",
+      "keywords": [
+        "금리혜택"
+      ],
+      "exclusive_group": null,
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": null
+        },
+        "income_max": null,
+        "income_cond_code": "0043001",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "maturity_3y",
+            "label": "의무가입 3년",
+            "auto": true,
+            "min_months": 36
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "tax",
+        "monthly_limit": 1660000,
+        "tax_free_limit": 2000000,
+        "term_years": 3,
+        "benefit_note": "이자·배당소득 비과세 한도 적용 (서민형 400만 원)"
+      },
+      "source": {
+        "name": "금융위원회",
+        "url": "https://www.fsc.go.kr",
+        "based_on": "2026-09-01",
+        "verified": false,
+        "note": "서민형/일반형 비과세 한도 구분 미확인"
+      },
+      "documents": [
+        "신분증",
+        "소득 증빙 (서민형·농어민형 신청 시)"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "youth_monthly_rent",
+      "name": "청년월세 지원",
+      "short_name": "청년월세 지원",
+      "provider": "국토교통부",
+      "category": "housing_grant",
+      "is_policy": true,
+      "lclsf": "주거",
+      "mclsf": "전월세 및 주거급여 지원",
+      "keywords": [
+        "보조금",
+        "주거지원"
+      ],
+      "exclusive_group": null,
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": 30000000,
+        "income_cond_code": "0043002",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": false,
+        "extra": [
+          {
+            "key": "monthly_rent_only",
+            "label": "월세 계약 거주자 전용 — 전세 목표와 불일치",
+            "auto": true,
+            "goal_types": [
+              "monthly_rent"
+            ]
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시 (2026년 상시사업 전환)",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "grant",
+        "monthly_amount": 200000,
+        "months": 24,
+        "benefit_note": "월 최대 20만 원 × 최대 24개월 (총 480만 원)"
+      },
+      "source": {
+        "name": "복지로",
+        "url": "https://www.bokjiro.go.kr",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "임대차계약서 사본",
+        "월세 이체 증빙 (최근 3개월)",
+        "주민등록등본",
+        "가족관계증명서",
+        "소득·재산 증빙 (본인 및 부모)"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "seoul_youth_allowance",
+      "name": "서울 청년수당",
+      "short_name": "청년수당",
+      "provider": "서울특별시",
+      "category": "housing_grant",
+      "is_policy": true,
+      "lclsf": "일자리",
+      "mclsf": "취업",
+      "keywords": [
+        "보조금",
+        "장기미취업청년"
+      ],
+      "exclusive_group": null,
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 34
+        },
+        "income_max": null,
+        "income_cond_code": "0043001",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013003"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [
+          "11"
+        ],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "unemployed_only",
+            "label": "졸업 후 미취업 또는 단기근로 상태의 청년 대상",
+            "auto": true
+          },
+          {
+            "key": "median_150",
+            "label": "가구 중위소득 150% 이하",
+            "auto": false
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057001",
+        "label": "특정기간 (연 2회 내외 모집)",
+        "start": "2026-03-06",
+        "end": "2026-03-13"
+      },
+      "finance": {
+        "type": "grant",
+        "monthly_amount": 500000,
+        "months": 6,
+        "benefit_note": "월 50만 원 × 최대 6개월"
+      },
+      "source": {
+        "name": "서울특별시",
+        "url": "https://youth.seoul.go.kr",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "주민등록등본",
+        "최종학력 졸업(예정) 증명서",
+        "건강보험 자격득실 확인서 (미취업 확인용)"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "kpass",
+      "name": "K-패스 대중교통비 환급",
+      "short_name": "K-패스",
+      "provider": "국토교통부",
+      "category": "living_discount",
+      "is_policy": true,
+      "lclsf": "금융･복지･문화",
+      "mclsf": "문화활동 및 생활지원",
+      "keywords": [
+        "바우처"
+      ],
+      "exclusive_group": "transport",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": null
+        },
+        "income_max": null,
+        "income_cond_code": "0043001",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "min_trips",
+            "label": "월 15회 이상 대중교통 이용 시 환급",
+            "auto": false
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "discount",
+        "refund_rate_youth": 0.45,
+        "target_category": [
+          "대중교통",
+          "택시"
+        ],
+        "benefit_note": "청년 45% 환급 (만 19~34세, 지자체별 상이) · 월 15회 이상 이용 조건"
+      },
+      "source": {
+        "name": "국토교통부 K-패스",
+        "url": "https://korea-pass.kr",
+        "based_on": "2026-09-03",
+        "verified": true
+      },
+      "documents": [
+        "별도 서류 없음 — K-패스 앱/누리집 가입 후 교통카드 등록"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "climate_card",
+      "name": "기후동행카드",
+      "short_name": "기후동행카드",
+      "provider": "서울특별시",
+      "category": "living_discount",
+      "is_policy": true,
+      "lclsf": "금융･복지･문화",
+      "mclsf": "문화활동 및 생활지원",
+      "keywords": [
+        "바우처"
+      ],
+      "exclusive_group": "transport",
+      "eligibility": {
+        "age": {
+          "min": 19,
+          "max": 39
+        },
+        "income_max": null,
+        "income_cond_code": "0043001",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [
+          "11"
+        ],
+        "homeowner_allowed": true,
+        "extra": []
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "discount",
+        "monthly_price": 62000,
+        "monthly_price_youth": 55000,
+        "target_category": [
+          "대중교통"
+        ],
+        "benefit_note": "서울 지하철·버스 무제한. 청년(만19~39) 55,000원 / 일반 62,000원"
+      },
+      "source": {
+        "name": "서울특별시",
+        "url": "https://news.seoul.go.kr/traffic",
+        "based_on": "2026-09-03",
+        "verified": true,
+        "note": "'모두의카드 기후동행패스'로 개편 논의가 확인되므로 시연 전 최신 요금 재확인 권장."
+      },
+      "documents": [
+        "별도 서류 없음 — 모바일 티머니 앱 또는 실물카드 구매 후 충전"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    },
+    {
+      "policy_id": "local_currency",
+      "name": "지역사랑상품권",
+      "short_name": "지역화폐",
+      "provider": "행정안전부 / 지자체",
+      "category": "living_discount",
+      "is_policy": true,
+      "lclsf": "금융･복지･문화",
+      "mclsf": "문화활동 및 생활지원",
+      "keywords": [
+        "바우처"
+      ],
+      "exclusive_group": null,
+      "eligibility": {
+        "age": {
+          "min": 0,
+          "max": null
+        },
+        "income_max": null,
+        "income_cond_code": "0043001",
+        "marriage_codes": [
+          "0055003"
+        ],
+        "job_codes": [
+          "0013010"
+        ],
+        "school_codes": [
+          "0049010"
+        ],
+        "sbiz_codes": [
+          "0014010"
+        ],
+        "regions": [],
+        "homeowner_allowed": true,
+        "extra": [
+          {
+            "key": "region_issue",
+            "label": "지자체별 발행 여부·할인율·구매한도가 다름",
+            "auto": false
+          }
+        ]
+      },
+      "apply_period": {
+        "code": "0057002",
+        "label": "상시(지자체별 발행일정)",
+        "start": null,
+        "end": null
+      },
+      "finance": {
+        "type": "discount",
+        "discount_rate": 0.07,
+        "monthly_purchase_limit": 500000,
+        "target_category": [
+          "외식",
+          "카페/디저트",
+          "편의점",
+          "생활잡화"
+        ],
+        "benefit_note": "액면가 대비 할인 구매 (지자체별 5~10%)"
+      },
+      "source": {
+        "name": "행정안전부",
+        "url": "https://www.mois.go.kr",
+        "based_on": "2026-09-01",
+        "verified": false,
+        "note": "지자체별 할인율·구매한도가 달라 단일값 검증 불가"
+      },
+      "documents": [
+        "별도 서류 없음 — 지자체 지역화폐 앱 가입"
+      ],
+      "documents_note": "일반적으로 요구되는 서류입니다. 실제 제출 목록은 신청 기관·은행 공고로 반드시 확인하세요."
+    }
+  ]
+}

@@ -175,6 +175,17 @@ Planned Gate 덕분에 **1,000원짜리가 118,000원짜리보다 3배 높은 �
   시연에는 조밀한 구간(01/14~02/12)만 쓰는 편이 월 소비 추정에 정확하다.
 - 밴드 경계(충동성·세션)는 이 96건에 맞춰 보정한 값이다. 데이터가 바뀌면 재보정할 것.
 
+## 이 저장소의 두 구현
+
+| | `site/` | `backend/` |
+|---|---|---|
+| 언어 | JavaScript (Vanilla + Vercel) | Python (FastAPI) |
+| 역할 | **실제 운영되는 화면** | AI 레이어·계산 엔진 설계 검증 |
+| 테스트 | 없음 | 119개 |
+
+`site/` 는 [lhy0205/blue](https://github.com/lhy0205/blue) 의 **아카이브 사본**입니다.
+개발과 배포는 원본 저장소에서 하세요 — 자세한 내용은 [site/README-MIRROR.md](site/README-MIRROR.md).
+
 ## 문서
 
 [AI_ARCHITECTURE.md](docs/AI_ARCHITECTURE.md) · [CALC_ENGINE.md](docs/CALC_ENGINE.md) ·

@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "name": "알뜰폰(MVNO) 요금 구간 참고표",
+    "source_name": "알뜰폰 허브 · 모요(모두의요금제) 시세 대조",
+    "source_url": "https://www.moyoplan.com/plans",
+    "based_on": "2026-09-03",
+    "verified": true,
+    "notice": "특정 사업자·요금제가 아니라 데이터 구간별 시장 가격 범위입니다. 프로모션가는 6~12개월 후 정상가로 전환되는 경우가 많고, 2026년 6월부터 통신 3사도 2만 원대 무제한 요금제를 내놓아 구간별 격차가 줄었습니다. 실제 요금제는 반드시 비교 사이트에서 확인하세요.",
+    "note": "2026년 9월 시세 대조: 7GB급 16,300~18,500원 / 20GB급 22,990~29,700원 / 25GB 27,590원 확인. 제휴 혜택을 빼면 실부담은 더 낮아질 수 있습니다."
+  },
+  "tiers": [
+    { "key": "light",     "label": "소량 (1~3GB)",       "data_gb": 3,   "price_min": 8000,  "price_max": 13000 },
+    { "key": "standard",  "label": "표준 (7~11GB)",      "data_gb": 11,  "price_min": 13000, "price_max": 19000 },
+    { "key": "heavy",     "label": "대용량 (20~30GB)",   "data_gb": 25,  "price_min": 22000, "price_max": 30000 },
+    { "key": "unlimited", "label": "무제한급",            "data_gb": 999, "price_min": 25000, "price_max": 38000 }
+  ]
+}

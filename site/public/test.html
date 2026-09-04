@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>청사진 엔진 테스트</title>
+<style>body{font:13px/1.6 ui-monospace,Consolas,monospace;padding:20px;white-space:pre-wrap}</style></head>
+<body><pre id="out">running…</pre>
+<script type="module">
+import { judgeAll, resolveCombination, filterByGoal, koreanAge } from './js/rules.js';
+import { buildBlueprint, feasibility, simulate, progress, money, ddayFrom } from './js/calc.js';
+import { parseBulk, scoreTransaction, monthlyReport, prescribe, median, nudgeFor, nudgeImpact } from './js/fintox.js';
+import { makeIcs, buildScheduleEvents } from './js/ics.js';
+
+const L = [];
+const log = (...a) => L.push(a.join(' '));
+let fails = 0;
+function assert(name, cond, got) {
+  if (cond) log(`  ✅ ${name}`);
+  else { fails++; log(`  ❌ ${name}  → 실제: ${got}`); }
+}
+
+const db = await (await fetch('./data/policies.json')).json();
+const POLICIES = db.policies;
+const TODAY = new Date('2026-09-03');
+
+/* ===================== 페르소나 1 · 김민재 ===================== */
+log('=== 페르소나 1 · 김민재 (26세 / 연봉 3,200만 / 현금 600만 / 마포구 / 재직·중소기업) ===');
+const p1 = {
+  nickname: '김민재', birth_ymd: '2000-03-15', annual_income: 32000000,
+  job_code: '0013001', school_code: '0049007', major_code: '0011003',
+  marriage_code: '0055002', sbiz_codes: ['0014001'], net_asset: 20000000,
+  zip_cd: '11440', region_name: '서울특별시 마포구', is_homeowner: false,
+};
+const g1 = { goal_type: 'jeonse', target_amount: 100000000, target_months: 24, current_asset: 6000000, started_on: '2026-09-03' };
+
+assert('만 나이 26세', koreanAge(p1.birth_ymd, TODAY) === 26, koreanAge(p1.birth_ymd, TODAY));
+
+const scoped1 = filterByGoal(POLICIES, g1.goal_type);
+assert('전세 목표에 주택구입대출 제외', !scoped1.some(p => p.category === 'purchase_loan'), scoped1.map(p=>p.category).join(','));
+
+const j1 = judgeAll(scoped1, p1, g1, TODAY);
+log('');
+for (const r of j1) log(`  ${r.dot} ${r.label.padEnd(6)} ${r.policy.short_name.padEnd(14)} ${money(r.amount.value).padStart(10)}  ${r.reason}`);
+log('');
+
+const v = id => (j1.find(r => r.policy_id === id) || {}).verdict;
+assert('버팀목 = 신청 가능',          v('youth_butimok') === 'eligible', v('youth_butimok'));
+assert('중기청 = 조건부(신규접수 확인)', v('sme_youth_jeonse') === 'conditional', v('sme_youth_jeonse'));
+assert('청년월세 = 대상 아님(전세목표)', v('youth_monthly_rent') === 'not_eligible', v('youth_monthly_rent'));
+assert('청년수당 = 대상 아님(재직자)',   v('seoul_youth_allowance') === 'not_eligible', v('seoul_youth_allowance'));
+assert('도약계좌 = 종료(2025.12 신규중단)', v('youth_leap_account') === 'ended', v('youth_leap_account'));
+assert('청년미래적금 = 조건부(3년만기)',  v('youth_future_savings') === 'conditional', v('youth_future_savings'));
+assert('내일채움 = 종료(신규 중단)',      v('youth_naeil_chaeum') === 'ended', v('youth_naeil_chaeum'));
+assert('내일저축 = 조건부(접수전)',      v('youth_tomorrow_saving') === 'conditional', v('youth_tomorrow_saving'));
+
+const butimok = j1.find(r => r.policy_id === 'youth_butimok');
+assert('버팀목 활용액 8,000만', butimok.amount.value === 80000000, butimok.amount.value);
+assert('버팀목 자산요건 자동 통과', butimok.checks.find(c => c.key === 'asset_limit').status === 'pass',
+  butimok.checks.find(c => c.key === 'asset_limit').status);
+log(`     계산근거: ${butimok.amount.formula}`);
+
+/* 중복 선택: 버팀목 + 서울임차보증금 + 도약계좌 */
+log('\n--- STEP1 중복 선택: 버팀목 + 서울 임차보증금 + 청년도약계좌 ---');
+const sel1 = j1.filter(r => ['youth_butimok','seoul_youth_deposit','youth_leap_account'].includes(r.policy_id));
+const comb1 = resolveCombination(sel1, db.exclusive_groups);
+for (const c of comb1.conflicts) log(`  ⚠️ [${c.level}] ${c.label}: ${c.reason}\n     → ${c.resolution}`);
+assert('전세대출 그룹 충돌 감지', comb1.conflicts.some(c => c.group === 'jeonse_loan'), JSON.stringify(comb1.conflicts.map(c=>c.group)));
+assert('전세대출은 1개만 적용', comb1.applied.filter(a => a.applied && a.policy.exclusive_group === 'jeonse_loan').length === 1,
+  comb1.applied.filter(a => a.applied && a.policy.exclusive_group === 'jeonse_loan').length);
+
+/* 사용자가 STEP3에서 '버팀목'을 최종 확정한 경우 = 설계서 시연 시나리오 */
+log('\n--- STEP3 최종 확정: 청년 버팀목 ---');
+const combMain = resolveCombination(j1.filter(r => r.policy_id === 'youth_butimok'), db.exclusive_groups);
+const bp1 = buildBlueprint(g1, combMain.applied);
+assert('추가 필요자금 1,400만 원', bp1.additionalNeeded === 14000000, bp1.additionalNeeded);
+assert('권장 월저축 583,000원', bp1.recommendedMonthly === 583000, bp1.recommendedMonthly);
+log(`\n  목표 ${money(bp1.target)} / 정책대출 ${money(bp1.policyLoan)} / 필요 자기자본 ${money(bp1.requiredEquity)}`);
+log(`  보유 ${money(bp1.currentAsset)} → 추가 필요 ${money(bp1.additionalNeeded)} → 권장 월 ${money(bp1.recommendedMonthly)}`);
+log(`  ${bp1.formula.requiredEquity}\n  ${bp1.formula.additionalNeeded}\n  ${bp1.formula.monthly}`);
+
+const sim58 = simulate(bp1, g1, 583000);
+const sim70 = simulate(bp1, g1, 700000);
+log(`\n  월 58.3만 → ${sim58.monthsNeeded}개월 (${sim58.label})`);
+log(`  월 70만  → ${sim70.monthsNeeded}개월 (${sim70.label}) ${sim70.message}`);
+assert('월 70만이면 24개월보다 단축', sim70.monthsNeeded < 24, sim70.monthsNeeded);
+
+/* ===================== 페르소나 2 · 이지은 ===================== */
+log('\n=== 페르소나 2 · 이지은 (33세 / 합산 8,400만 / 금융자산 1.99억 / 기혼) ===');
+const p2 = {
+  nickname: '이지은', birth_ymd: '1993-06-10', annual_income: 84000000,
+  job_code: '0013001', school_code: '0049007', major_code: '0011002',
+  marriage_code: '0055001', sbiz_codes: [], net_asset: 250000000,
+  zip_cd: '41135', region_name: '경기도 안양시', is_homeowner: false,
+};
+const g2 = { goal_type: 'purchase', target_amount: 600000000, target_months: 12, current_asset: 199000000, started_on: '2026-09-03' };
+const j2 = judgeAll(filterByGoal(POLICIES, g2.goal_type), p2, g2, TODAY);
+log('');
+for (const r of j2) log(`  ${r.dot} ${r.label.padEnd(6)} ${r.policy.short_name.padEnd(14)} ${money(r.amount.value).padStart(10)}  ${r.reason}`);
+
+const sel2 = j2.filter(r => r.verdict === 'eligible' && r.policy.category === 'purchase_loan');
+const comb2 = resolveCombination(sel2, db.exclusive_groups);
+const bp2 = buildBlueprint(g2, comb2.applied);
+const fe2 = feasibility(g2, bp2, 2000000);
+log(`\n  ${fe2.formula}`);
+log(`  판정: ${fe2.label} — ${fe2.message}`);
+assert('페르소나2는 현재 계획으로 부족 판정', fe2.level !== 'ok', fe2.level);
+assert('부대비용이 계산에 포함됨', bp2.acquisitionCost > 0, bp2.acquisitionCost);
+
+/* 집값을 낮추면 달성 가능해지는가 */
+const g2b = { ...g2, target_amount: 480000000 };
+const j2b = judgeAll(filterByGoal(POLICIES, 'purchase'), p2, g2b, TODAY);
+const comb2b = resolveCombination(j2b.filter(r => r.verdict === 'eligible' && r.policy.category === 'purchase_loan'), db.exclusive_groups);
+const fe2b = feasibility(g2b, buildBlueprint(g2b, comb2b.applied), 2000000);
+log(`  목표 4.8억으로 조정 시 → ${fe2b.label}`);
+assert('집값 조정 시 달성 가능권 전환', fe2b.level === 'ok', fe2b.level);
+
+/* ===================== FinTox · 실제 더미 96건 ===================== */
+log('\n=== FinTox · 팀 더미 카드내역 ===');
+const txt = await (await fetch('./data/dummy_tx.txt')).text();
+const txs = parseBulk(txt, 2026);
+assert('파서가 90건 이상 인식', txs.length >= 90, txs.length);
+log(`  파싱 ${txs.length}건 / 중앙값 ${median(txs.map(t=>t.amount)).toLocaleString()}원`);
+
+const rep = monthlyReport(txs, { monthlyTarget: 583000 });
+log(`  야간(22~06시) ${rep.night.count}건 ${rep.night.pct}% / 업종 미상 ${rep.unknownCount}건 ${rep.unknownPct}%`);
+log('  카테고리 TOP5: ' + rep.categories.slice(0,5).map(c => `${c.cat} ${c.amount.toLocaleString()}(${c.pct}%)`).join(' · '));
+log('  반복 3회+: ' + rep.repeats.slice(0,5).map(r => `${r.name}×${r.count}`).join(' · '));
+assert('업종 미상이 유의미하게 잡힘', rep.unknownCount >= 10, rep.unknownCount);
+
+const demo = { amount: 34000, hour: 23, merchant_norm: '배달의민족', category: '배달', occurred_at: new Date(2026,8,1,23,40).toISOString() };
+const s = scoreTransaction(demo, { history: txs, monthlyTarget: 583000, monthlyBudget: 1500000 });
+log(`\n  [데모] 배달의민족 34,000원 23:40 → ${s.score}점 (${s.levelLabel}) · 목표 대비 ${s.goalSharePct}%`);
+s.breakdown.forEach(b => log(`     ${b.label.padEnd(9)} ${String(b.point).padStart(5)} / ${b.max}   ${b.fact}`));
+
+const big = { amount: 1220252, hour: 22, merchant_norm: '네이버파이낸셜', category: '업종 미상', occurred_at: new Date(2026,9,1,22,11).toISOString() };
+const sBig = scoreTransaction(big, { history: txs, monthlyTarget: 583000, monthlyBudget: 1500000 });
+log(`  [이상치] 네이버파이낸셜 1,220,252원 22:11 → ${sBig.score}점 (${sBig.levelLabel})`);
+assert('이상치가 데모보다 높게 채점', sBig.score > s.score, `${sBig.score} vs ${s.score}`);
+assert('점수는 0~100 범위', s.score >= 0 && s.score <= 100 && sBig.score <= 100, `${s.score}/${sBig.score}`);
+
+const rx = prescribe(rep, POLICIES, {});
+log('\n  Smart Prescription:');
+rx.forEach(r => log(`   • [${r.type}] ${r.title} — 절감 예상 ${r.saving.toLocaleString()}원\n     ${r.body}`));
+assert('교통 이중지출 경고 생성', rx.some(r => r.type === 'warning'), rx.map(r=>r.type).join(','));
+
+/* ===================== 대시보드 진척률 ===================== */
+log('\n=== 대시보드 ===');
+const cl = [{is_done:true},{is_done:true},{is_done:false},{is_done:false},{is_done:false},{is_done:false}];
+const pr = progress(g1, bp1, cl);
+log(`  저축 진척 ${pr.savingPct}% (${pr.formula})`);
+log(`  실행 준비도 ${pr.readinessPct}% (${pr.done}/${pr.total})`);
+log(`  ${pr.ddayLabel} · 남은 ${pr.daysLeft}일`);
+assert('준비도 33%', pr.readinessPct === 33, pr.readinessPct);
+assert('저축 진척률 계산됨', pr.savingPct === 30, pr.savingPct);
+
+/* ===================== D-Day 연동 (설계서 8p 시연 포인트) ===================== */
+log('\n=== D-Day 연동 ===');
+const dSlow = simulate(bp1, g1, 300000);
+const dBase = simulate(bp1, g1, 583000);
+const dFast = simulate(bp1, g1, 700000);
+const pSlow = progress(g1, bp1, cl, dSlow.monthsNeeded);
+const pBase = progress(g1, bp1, cl, dBase.monthsNeeded);
+const pFast = progress(g1, bp1, cl, dFast.monthsNeeded);
+log(`  월 30만  → ${pSlow.projectedDday.label} (${dSlow.monthsNeeded}개월)`);
+log(`  월 58.3만 → ${pBase.projectedDday.label} (${dBase.monthsNeeded}개월)`);
+log(`  월 70만  → ${pFast.projectedDday.label} (${dFast.monthsNeeded}개월)`);
+assert('저축액을 올리면 D-Day가 당겨진다', pFast.projectedDday.days < pBase.projectedDday.days,
+  `${pFast.projectedDday.days} vs ${pBase.projectedDday.days}`);
+assert('저축액을 낮추면 D-Day가 밀린다', pSlow.projectedDday.days > pBase.projectedDday.days,
+  `${pSlow.projectedDday.days} vs ${pBase.projectedDday.days}`);
+assert('목표 D-Day는 저축액과 무관하게 고정', pSlow.targetDday.days === pFast.targetDday.days,
+  `${pSlow.targetDday.days} vs ${pFast.targetDday.days}`);
+
+/* 목표 금액 슬라이더 — 페르소나2 시연 동선 (6억 🔴 → 5억 🟢) */
+log('\n=== 목표 금액 슬라이더 (이지은) ===');
+for (const amt of [700000000, 600000000, 500000000]) {
+  const gx = { ...g2, target_amount: amt };
+  const jx = judgeAll(filterByGoal(POLICIES, 'purchase'), p2, gx, TODAY);
+  const cx = resolveCombination(jx.filter(r => r.verdict === 'eligible' && r.policy.category === 'purchase_loan'), db.exclusive_groups);
+  const bx = buildBlueprint(gx, cx.applied);
+  const fx = feasibility(gx, bx, 2000000);
+  const sx = simulate(bx, gx, 2000000);
+  log(`  ${(amt/100000000)}억 → ${fx.label} · ${sx.ready ? '지금 실행 가능' : ddayFrom(gx.started_on, sx.monthsNeeded).label}`);
+}
+const g5 = { ...g2, target_amount: 500000000 };
+const j5 = judgeAll(filterByGoal(POLICIES, 'purchase'), p2, g5, TODAY);
+const c5 = resolveCombination(j5.filter(r => r.verdict === 'eligible' && r.policy.category === 'purchase_loan'), db.exclusive_groups);
+const b5 = buildBlueprint(g5, c5.applied);
+assert('5억으로 낮추면 달성 가능권', feasibility(g5, b5, 2000000).level === 'ok', feasibility(g5, b5, 2000000).level);
+assert('추가저축 0이면 지금 실행 가능', simulate(b5, g5, 2000000).ready === true, simulate(b5, g5, 2000000).ready);
+
+const g7 = { ...g2, target_amount: 700000000 };
+const j7 = judgeAll(filterByGoal(POLICIES, 'purchase'), p2, g7, TODAY);
+const bogeum7 = j7.find(r => r.policy_id === 'bogeumjari');
+assert('7억이면 보금자리론 주택가격 상한 초과로 판정 변경', bogeum7.verdict === 'not_eligible', bogeum7.verdict);
+
+/* ===================== 넛지 저축 / 서류 / 캘린더 ===================== */
+log('\n=== 넛지 저축 ===');
+const nSafe = nudgeFor({ amount: 8500 }, { level: 'safe' });
+const nWatch = nudgeFor({ amount: 34000 }, { level: 'watch' });
+const nCaution = nudgeFor({ amount: 1220252 }, { level: 'caution' });
+log(`  양호 8,500원 → ${nSafe.amount.toLocaleString()}원 (${nSafe.ratePct}%)`);
+log(`  관찰 34,000원 → ${nWatch.amount.toLocaleString()}원 (${nWatch.ratePct}%)`);
+log(`  주의 1,220,252원 → ${nCaution.amount.toLocaleString()}원 (상한 적용 ${nCaution.capped})`);
+assert('위험도가 높을수록 넛지 비율이 커진다', nSafe.rate < nWatch.rate && nWatch.rate < nCaution.rate,
+  `${nSafe.rate}/${nWatch.rate}/${nCaution.rate}`);
+assert('넛지 금액에 상한 5만원이 적용된다', nCaution.amount === 50000 && nCaution.capped, nCaution.amount);
+const imp = nudgeImpact(583000, 583000, 14000000);
+assert('누적 넛지가 D-Day 단축으로 환산된다', imp.days === 30, imp.days);
+
+log('\n=== 제출서류 ===');
+const withDocs = POLICIES.filter(p => p.documents && p.documents.length);
+log(`  서류 목록 보유 정책: ${withDocs.length}종 / 전체 ${POLICIES.length}종`);
+assert('핵심 정책에 제출서류가 있다', withDocs.length >= 15, withDocs.length);
+const bt = POLICIES.find(p => p.policy_id === 'youth_butimok');
+assert('버팀목 서류 7건', bt.documents.length === 7, bt.documents.length);
+assert('서류에 확인 안내문이 붙는다', !!bt.documents_note, 'none');
+
+log('\n=== 캘린더(.ics) ===');
+const evts = buildScheduleEvents(g1, bt, new Date('2028-09-03'));
+const ics = makeIcs(evts);
+log(`  일정 ${evts.length}건 생성`);
+evts.forEach(e => log(`   · ${e.title.replace('[청사진] ','')} — ${typeof e.date === 'string' ? e.date : e.date.toISOString().slice(0,10)} (${e.alarmDaysBefore}일 전 알림)`));
+assert('VCALENDAR 구조가 올바르다', ics.startsWith('BEGIN:VCALENDAR') && ics.trim().endsWith('END:VCALENDAR'), ics.slice(0,20));
+assert('VEVENT 수가 일정 수와 같다', (ics.match(/BEGIN:VEVENT/g) || []).length === evts.length, (ics.match(/BEGIN:VEVENT/g) || []).length);
+assert('미리 알림(VALARM)이 들어간다', (ics.match(/BEGIN:VALARM/g) || []).length === evts.length, (ics.match(/BEGIN:VALARM/g) || []).length);
+assert('줄바꿈이 CRLF 이다', ics.includes('\r\n'), 'no CRLF');
+assert('RFC5545 75옥텟 접힘 적용', ics.split('\r\n').every(l => new TextEncoder().encode(l).length <= 75), 'too long line');
+
+log(`\n${fails === 0 ? '🟢 전체 통과' : `🔴 실패 ${fails}건`}`);
+document.getElementById('out').textContent = L.join('\n');
+</script></body></html>

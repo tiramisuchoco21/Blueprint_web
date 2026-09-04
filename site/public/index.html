@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>청사진 · 청년 정책금융 AI PB</title>
+<link rel="stylesheet" href="./css/app.css">
+<style>
+  .hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px 80px;text-align:center}
+  .pill{background:var(--sky);color:var(--blue);padding:7px 15px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:20px}
+  .hero h1{font-size:38px;font-weight:800;color:var(--navy-deep);letter-spacing:-.6px;margin-bottom:12px}
+  .hero .sub{color:var(--muted);font-size:15px;margin-bottom:30px;line-height:1.6}
+  .search{
+    width:100%;max-width:660px;background:#fff;border:2px solid #e5e7eb;border-radius:16px;
+    padding:8px 10px 8px 20px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh-lg);transition:.2s
+  }
+  .search:focus-within{border-color:var(--blue);box-shadow:0 10px 25px rgba(37,99,235,.14)}
+  .search input{flex:1;border:none;outline:none;font-size:16px;background:none;padding:12px 0}
+  .search input::placeholder{color:#9ca3af}
+  .tags{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .tags button{background:#fff;border:1px solid #e5e7eb;color:var(--muted);padding:7px 13px;border-radius:8px;font-size:13px}
+  .tags button:hover{border-color:var(--blue2);color:var(--blue)}
+  .demo{margin-top:38px;font-size:12px;color:var(--muted2);line-height:1.9}
+  .demo b{color:var(--muted);font-weight:700}
+  .parsed{max-width:660px;width:100%;margin-top:18px;text-align:left}
+  .parsed .grid4{gap:10px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="./index.html"><i>청</i><span>청사진</span></a>
+  <div class="top-right" id="topRight"></div>
+</header>
+
+<main class="hero">
+  <div class="pill">청년 정책금융 AI PB</div>
+  <h1>꿈을 말하면, 길을 잇습니다</h1>
+  <p class="sub">
+    이루고 싶은 목표를 그냥 말해보세요.<br>
+    내가 가진 돈에 <b>활용할 수 있는 정책</b>까지 더해서 실제로 가능한지 계산해 드립니다.
+  </p>
+
+  <div class="search">
+    <input id="q" placeholder="예: 2년 뒤 마포구에 1억 전세로 독립하고 싶어. 지금 600만 원 있어." autocomplete="off">
+    <button class="btn" id="go">제출하기</button>
+  </div>
+
+  <div class="tags">
+    <button data-t="2년 뒤 마포구에 1억 전세로 독립하고 싶어. 지금 600만 원 있어.">전세 독립</button>
+    <button data-t="1년 뒤에 경기권 6억 아파트를 사고 싶어요. 금융자산은 2억 정도 됩니다.">내집 마련</button>
+    <button data-t="3년 안에 결혼자금 5천만 원을 모으고 싶어요. 지금 800만 원 있어요.">결혼 자금</button>
+    <button data-t="2년 동안 목돈 3천만 원 만들고 싶어. 현재 500만 원 있어.">목돈 만들기</button>
+  </div>
+
+  <div class="parsed hide" id="parsed">
+    <div class="card">
+      <div class="trust"><span class="t-fact">FACT</span><span class="t-calc">CALCULATION</span></div>
+      <div class="card-t" style="font-size:16px;margin-bottom:12px">이렇게 이해했습니다</div>
+      <div class="grid4" id="chips"></div>
+      <div id="askMore" style="margin-top:14px"></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn ghost sm" id="redo">다시 입력</button>
+        <button class="btn sm" id="confirm" style="flex:1">이 목표로 분석 시작</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo" id="demoBox">
+    <b>심사용 데모 계정</b><br>
+    demo1@cheongsajin.kr / demo1234 — 김민재 (26세 · 2년 뒤 1억 전세 독립)<br>
+    demo2@cheongsajin.kr / demo1234 — 이지은 (33세 · 1년 뒤 6억 아파트)
+  </div>
+</main>
+
+<script type="module">
+import { initStore, currentUser, getActiveGoal, getProfile, createGoal, signOut, aiEnabled, saveProfile } from './js/store.js';
+import { parseGoal, enhanceWithAI, GOAL_LABEL } from './js/goalparse.js';
+import { DEBT_LABEL } from './js/calc.js';
+
+const $ = (s) => document.querySelector(s);
+let parsedGoal = null;
+
+const { mode } = await initStore();
+const user = await currentUser();
+
+/* 재접속 라우팅: 목표가 있으면 곧바로 목표 대시보드로 */
+if (user) {
+  const goal = await getActiveGoal();
+  if (goal) location.replace('./app.html#dashboard');
+}
+
+const prof = user ? await getProfile() : null;
+$('#topRight').innerHTML = user
+  ? `<span>${prof ? prof.nickname : ''}님</span>
+     <button class="btn ghost sm" id="out">로그아웃</button>`
+  : `<a class="btn ghost sm" href="./auth.html?mode=login">로그인</a>
+     <a class="btn sm" href="./auth.html?mode=signup">회원가입</a>`;
+$('#out')?.addEventListener('click', async () => { await signOut(); location.reload(); });
+if (user) $('#demoBox').classList.add('hide');
+
+document.querySelectorAll('.tags button').forEach((b) =>
+  b.addEventListener('click', () => { $('#q').value = b.dataset.t; analyze(); }));
+$('#go').addEventListener('click', analyze);
+$('#q').addEventListener('keydown', (e) => { if (e.key === 'Enter') analyze(); });
+$('#redo').addEventListener('click', () => { $('#parsed').classList.add('hide'); $('#q').focus(); });
+
+async function analyze() {
+  const text = $('#q').value.trim();
+  if (!text) { $('#q').focus(); return; }
+
+  /* 1) 규칙 파서가 먼저 결과를 낸다 (AI가 없어도 서비스가 멈추지 않는다) */
+  parsedGoal = parseGoal(text);
+  render();
+
+  /* 2) AI 키가 있으면 규칙 파서가 놓친 값만 보정한다 (기존 값은 덮어쓰지 않음) */
+  if (aiEnabled()) {
+    $('#askMore').innerHTML = `<div class="note"><span class="spin"></span> AI가 문장을 다시 확인하는 중…</div>`;
+    parsedGoal = await enhanceWithAI(text, parsedGoal);
+    render();
+  }
+}
+
+function render() {
+  const g = parsedGoal;
+  const won = (n) => n ? (n >= 100000000 ? (n / 100000000).toFixed(n % 100000000 ? 1 : 0) + '억 원' : Math.round(n / 10000).toLocaleString() + '만 원') : '—';
+
+  $('#chips').innerHTML = [
+    ['목표 유형', GOAL_LABEL[g.goal_type] || '기타'],
+    ['목표 금액', won(g.target_amount)],
+    ['목표 기간', g.target_months ? g.target_months + '개월' : '—'],
+    ['현재 자산', won(g.current_asset)],
+    /* 문장에서 부채를 찾았으면 함께 보여준다. "학자금 400만 원 있어" 를
+       보유 자산으로 잘못 넣지 않기 위해 파서가 따로 분리한다. */
+    ...(g.debts && g.debts.length
+      ? [['보유 부채', g.debts.map((d) => `${DEBT_LABEL[d.kind] || '대출'} ${won(d.balance)}`
+          + (d.rate ? ` (연 ${(d.rate * 100).toFixed(1)}%)` : '')).join(', ')]]
+      : []),
+  ].map(([l, v]) => `<div class="stat"><div class="l">${l}</div><div class="v" style="font-size:17px">${v}</div></div>`).join('');
+
+  const missing = [];
+  if (!g.target_amount) missing.push('목표 금액');
+  if (!g.target_months) missing.push('목표 기간');
+  const rateUnknown = (g.debts || []).filter((d) => d.needsRate);
+  const src = g.ai_used
+    ? '<span class="chip" style="background:#ffedd5;color:#c2410c">AI 보정 적용</span>'
+    : `<span class="chip">${aiEnabled() ? '규칙 파서로 충분' : '규칙 파서 · AI 미연결'}</span>`;
+  $('#askMore').innerHTML = (missing.length
+    ? `<div class="warn">${missing.join('과 ')}을(를) 알 수 없었습니다. 다음 화면에서 직접 입력해 주세요.</div>`
+    : `<div class="note">💡 정확한 정책 판정을 위해 나이·소득·거주지 정보가 필요합니다. ${user ? '가입 시 입력한 정보를 사용합니다.' : '회원가입에서 한 번만 입력하면 됩니다.'}</div>`)
+    + (rateUnknown.length
+      ? `<div class="warn" style="margin-top:8px">대출 금리를 찾지 못했습니다. 마이페이지에서 금리를 입력하면 상환 계획이 더 정확해집니다.</div>`
+      : '')
+    + `<div style="margin-top:8px">${src}</div>`;
+  $('#parsed').classList.remove('hide');
+  $('#parsed').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+$('#confirm').addEventListener('click', async () => {
+  if (!parsedGoal) return;
+  if (!user) {
+    sessionStorage.setItem('csj.pendingGoal', JSON.stringify(parsedGoal));
+    location.href = './auth.html?mode=signup&next=goal';
+    return;
+  }
+  /* 문장에서 찾은 부채는 목표가 아니라 프로필에 저장한다.
+     이미 입력해 둔 부채가 있으면 덮어쓰지 않는다. */
+  if (parsedGoal.debts && parsedGoal.debts.length && !(prof && prof.debts && prof.debts.length)) {
+    try { await saveProfile({ debts: parsedGoal.debts.map(({ needsRate, ...d }) => d) }); }
+    catch (e) { /* 저장 실패해도 목표 생성은 계속한다 */ }
+  }
+
+  await createGoal({
+    raw_input: parsedGoal.raw_input,
+    goal_type: parsedGoal.goal_type,
+    target_amount: parsedGoal.target_amount || 0,
+    target_months: parsedGoal.target_months || 24,
+    target_zip_cd: (prof && prof.zip_cd) || null,
+    current_asset: parsedGoal.current_asset || 0,
+    monthly_saving: 0,
+  });
+  location.href = './app.html#step1';
+});
+</script>
+</body>
+</html>

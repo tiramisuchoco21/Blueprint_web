@@ -1,0 +1,8 @@
+{
+  "name": "cheongsajin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "청사진 · 청년 정책금융 AI PB 웹서비스 MVP",
+  "engines": { "node": ">=20" }
+}

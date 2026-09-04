@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>로그인 · 청사진</title>
+<link rel="stylesheet" href="./css/app.css">
+<style>
+  .wrap{max-width:560px;margin:0 auto;padding:32px 20px 80px}
+  .tabs{display:flex;gap:8px;margin-bottom:20px}
+  .tabs button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--bd);background:#fff;font-weight:700;font-size:14px;color:var(--muted)}
+  .tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .why{background:var(--sky);border-radius:12px;padding:14px 16px;font-size:12.5px;color:var(--blue);line-height:1.6;margin-bottom:18px;font-weight:600}
+  .err{background:var(--red-bg);color:var(--red-tx);padding:11px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:14px}
+  .sec{font-size:13px;font-weight:800;color:var(--navy);margin:22px 0 10px;padding-top:18px;border-top:1px solid var(--bd)}
+  .sec:first-of-type{border-top:none;padding-top:0;margin-top:0}
+  .chks{display:flex;gap:8px;flex-wrap:wrap}
+  .chks label{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--navy);
+    border:1px solid var(--bd);border-radius:9px;padding:8px 11px;cursor:pointer;background:#fff}
+  .chks label:has(input:checked){background:var(--sky);border-color:var(--blue-bd2);color:var(--blue)}
+  .demo-row{display:flex;gap:8px;margin-top:12px}
+  .demo-row button{flex:1;font-size:12px;padding:10px;border:1px dashed var(--blue-bd2);border-radius:10px;color:var(--blue);background:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="./index.html"><i>청</i><span>청사진</span></a>
+  <div class="top-right"><a href="./index.html">홈으로</a></div>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <button id="tLogin">로그인</button>
+    <button id="tSignup">회원가입</button>
+  </div>
+
+  <div class="card">
+    <div id="err" class="err hide"></div>
+
+    <!-- 로그인 -->
+    <form id="loginForm">
+      <div class="field"><label>이메일</label><input class="inp" type="email" name="email" required autocomplete="email"></div>
+      <div class="field"><label>비밀번호</label><input class="inp" type="password" name="password" required autocomplete="current-password"></div>
+      <button class="btn full" type="submit">로그인</button>
+      <div class="demo-row">
+        <button type="button" data-demo="demo1@cheongsajin.kr">데모 · 김민재(전세 독립)</button>
+        <button type="button" data-demo="demo2@cheongsajin.kr">데모 · 이지은(내집 마련)</button>
+      </div>
+      <div style="text-align:center;margin-top:10px">
+        <button type="button" id="resetDemo"
+          style="background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer">
+          데모 데이터 새로 받기
+        </button>
+        <div id="resetMsg" style="font-size:12px;color:var(--green);font-weight:700;margin-top:6px"></div>
+      </div>
+    </form>
+
+    <!-- 회원가입 -->
+    <form id="signupForm" class="hide">
+      <div class="why">
+        📌 아래 정보는 <b>정책 자격 판정에 실제로 사용되는 값</b>입니다.<br>
+        연령·소득·거주지·취업형태가 없으면 “받을 수 있는 정책”을 계산할 수 없어 가입 시 한 번만 받습니다.
+      </div>
+
+      <div class="sec">계정</div>
+      <div class="field"><label>이메일</label><input class="inp" type="email" name="email" required autocomplete="email"></div>
+      <div class="grid2">
+        <div class="field"><label>비밀번호</label><input class="inp" type="password" name="password" minlength="6" required autocomplete="new-password"><span class="hint">6자 이상</span></div>
+        <div class="field"><label>이름 / 닉네임</label><input class="inp" name="nickname" required placeholder="김민재"></div>
+      </div>
+
+      <div class="sec">정책 판정 정보</div>
+      <div class="grid2">
+        <div class="field"><label>생년월일</label><input class="inp" type="date" name="birth_ymd" required value="2000-01-01"><span class="hint">만 나이 자동 계산 (연령 요건)</span></div>
+        <div class="field"><label>결혼 상태</label>
+          <select class="inp" name="marriage_code">
+            <option value="0055002">미혼</option><option value="0055001">기혼</option>
+          </select><span class="hint">신혼부부 전용 정책 판정</span>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>세전 연소득 (만 원)</label><input class="inp" type="number" name="annual_income" min="0" step="100" value="3200" required><span class="hint">소득 요건 비교값</span></div>
+        <div class="field"><label>순자산 (만 원)</label><input class="inp" type="number" name="net_asset" min="0" step="100" value="2000"><span class="hint">버팀목 3.45억 등 자산 요건</span></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>취업 형태</label><select class="inp" name="job_code" id="jobSel"></select></div>
+        <div class="field"><label>학력</label><select class="inp" name="school_code" id="schoolSel"></select></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>거주 시/도</label><select class="inp" id="sido"></select></div>
+        <div class="field"><label>시/군/구</label><select class="inp" name="zip_cd" id="sigungu"></select></div>
+      </div>
+      <div class="field">
+        <label>주택 보유</label>
+        <select class="inp" name="is_homeowner"><option value="false">무주택</option><option value="true">주택 보유</option></select>
+        <span class="hint">주거 정책 대부분이 무주택을 요건으로 합니다</span>
+      </div>
+      <div class="field">
+        <label>해당되는 항목 (선택)</label>
+        <div class="chks" id="sbiz"></div>
+        <span class="hint">중기청·내일채움공제 등 특화 정책 판정에 사용됩니다</span>
+      </div>
+
+      <div class="field">
+        <label>보유 부채 (선택)</label>
+        <div id="debtBox"></div>
+      </div>
+
+      <button class="btn full" type="submit" style="margin-top:18px">가입하고 분석 시작</button>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import { initStore, signIn, signUp, getActiveGoal, createGoal, resetDemoData, saveProfile, getProfile } from './js/store.js';
+import { CODE } from './js/rules.js';
+import { SIDO, SIGUNGU, regionName } from './js/regions.js';
+import { renderDebtEditor, collectDebts, validateDebts } from './js/debtform.js';
+
+const $ = (s) => document.querySelector(s);
+const params = new URLSearchParams(location.search);
+await initStore();
+
+/* --------- 셀렉트 채우기 --------- */
+const fill = (el, obj, skip = []) => {
+  el.innerHTML = Object.entries(obj).filter(([c]) => !skip.includes(c))
+    .map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
+};
+fill($('#jobSel'), CODE.job);
+fill($('#schoolSel'), CODE.school);
+$('#jobSel').value = '0013001';
+$('#schoolSel').value = '0049007';
+
+$('#sbiz').innerHTML = Object.entries(CODE.sbiz)
+  .filter(([c]) => !['0014009', '0014010'].includes(c))
+  .map(([c, n]) => `<label><input type="checkbox" value="${c}">${n}</label>`).join('');
+
+$('#sido').innerHTML = SIDO.map((s) => `<option value="${s.code}">${s.name}</option>`).join('');
+function fillSigungu() {
+  const list = SIGUNGU[$('#sido').value];
+  $('#sigungu').innerHTML = list
+    ? list.map(([c, n]) => `<option value="${c}">${n}</option>`).join('')
+    : `<option value="${$('#sido').value}">전체</option>`;
+}
+$('#sido').addEventListener('change', fillSigungu);
+fillSigungu();
+$('#sido').value = '11000'; fillSigungu(); $('#sigungu').value = '11440';
+
+/* --------- 부채 입력 ---------
+   목표 문장("학자금 대출 400만 원 있어")에서 뽑힌 부채가 있으면 미리 채운다. */
+let pendingDebts = [];
+try {
+  const pg = JSON.parse(sessionStorage.getItem('csj.pendingGoal') || 'null');
+  if (pg && pg.debts && pg.debts.length) pendingDebts = pg.debts.map(({ needsRate, ...d }) => d);
+} catch (e) { /* 무시 */ }
+renderDebtEditor($('#debtBox'), pendingDebts);
+if (pendingDebts.length) {
+  $('#debtBox').insertAdjacentHTML('afterbegin',
+    '<div class="note" style="margin-bottom:8px">목표 문장에서 찾은 대출을 미리 채웠습니다. 금리를 확인해 주세요.</div>');
+}
+
+/* --------- 탭 --------- */
+function setTab(t) {
+  const login = t === 'login';
+  $('#tLogin').classList.toggle('on', login);
+  $('#tSignup').classList.toggle('on', !login);
+  $('#loginForm').classList.toggle('hide', !login);
+  $('#signupForm').classList.toggle('hide', login);
+  $('#err').classList.add('hide');
+  document.title = (login ? '로그인' : '회원가입') + ' · 청사진';
+}
+$('#tLogin').addEventListener('click', () => setTab('login'));
+$('#tSignup').addEventListener('click', () => setTab('signup'));
+setTab(params.get('mode') === 'signup' ? 'signup' : 'login');
+
+const showErr = (m) => { $('#err').textContent = m; $('#err').classList.remove('hide'); };
+
+/* 로그인 후 이동: 목표가 있으면 대시보드, 없으면 목표 입력 */
+async function afterAuth() {
+  const pending = sessionStorage.getItem('csj.pendingGoal');
+  if (pending) {
+    const g = JSON.parse(pending);
+    sessionStorage.removeItem('csj.pendingGoal');
+    /* 기존 계정으로 로그인한 경우: 프로필에 부채가 없을 때만 문장에서 찾은 값을 넣는다 */
+    if (g.debts && g.debts.length) {
+      try {
+        const cur = await getProfile();
+        if (!cur || !(cur.debts && cur.debts.length)) {
+          await saveProfile({ debts: g.debts.map(({ needsRate, ...d }) => d) });
+        }
+      } catch (e) { /* 저장 실패해도 진행 */ }
+    }
+    await createGoal({
+      raw_input: g.raw_input, goal_type: g.goal_type,
+      target_amount: g.target_amount || 0, target_months: g.target_months || 24,
+      current_asset: g.current_asset || 0, monthly_saving: 0,
+    });
+    location.href = './app.html#step1';
+    return;
+  }
+  const goal = await getActiveGoal();
+  location.href = goal ? './app.html#dashboard' : './index.html';
+}
+
+/* --------- 로그인 --------- */
+$('#loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  try {
+    await signIn(f.get('email').trim(), f.get('password'));
+    await afterAuth();
+  } catch (err) { showErr(err.message); }
+});
+$('#resetDemo').addEventListener('click', () => {
+  try {
+    resetDemoData();
+    $('#resetMsg').textContent = '데모 데이터를 새로 받았습니다. 아래 데모 버튼을 눌러 주세요.';
+  } catch (err) {
+    $('#resetMsg').style.color = 'var(--red)';
+    $('#resetMsg').textContent = err.message;
+  }
+});
+
+document.querySelectorAll('[data-demo]').forEach((b) => b.addEventListener('click', async () => {
+  try {
+    await signIn(b.dataset.demo, 'demo1234');
+    await afterAuth();
+  } catch (err) { showErr(err.message + ' (데모 계정은 로컬 모드에서만 제공됩니다)'); }
+}));
+
+/* --------- 회원가입 --------- */
+$('#signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const zip = $('#sigungu').value;
+  const profile = {
+    nickname: f.get('nickname').trim(),
+    birth_ymd: f.get('birth_ymd'),
+    annual_income: Number(f.get('annual_income') || 0) * 10000,
+    net_asset: Number(f.get('net_asset') || 0) * 10000,
+    job_code: f.get('job_code'),
+    school_code: f.get('school_code'),
+    major_code: '0011009',
+    marriage_code: f.get('marriage_code'),
+    sbiz_codes: [...document.querySelectorAll('#sbiz input:checked')].map((i) => i.value),
+    zip_cd: zip,
+    region_name: regionName(zip),
+    is_homeowner: f.get('is_homeowner') === 'true',
+    household_size: 1,
+    debts: (validateDebts($('#debtBox')), collectDebts($('#debtBox'))),
+  };
+  try {
+    await signUp(f.get('email').trim(), f.get('password'), profile);
+    await afterAuth();
+  } catch (err) { showErr(err.message); }
+});
+</script>
+</body>
+</html>
